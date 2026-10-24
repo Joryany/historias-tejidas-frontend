@@ -1,16 +1,26 @@
 import { Routes, Route } from 'react-router-dom';
+import Inicio from './pages/Inicio'; 
 import Catalogo from './pages/Catalogo';
+import Personaliza from './pages/Personaliza';
+import Carrito from './pages/Carrito';
 import ProductoDetalle from './pages/ProductoDetalle';
 
 function App() {
   return (
     <Routes>
-    <Route path="/catalogo" element={<Catalogo />} />
+     
+      <Route path="/" element={<Inicio />} />
+      
+      <Route path="/catalogo" element={<Catalogo />} />
+      
+   
+      <Route path="/personaliza" element={<Personaliza />} />
+      
     
-    <Route path="/" element={<Catalogo />} />
-
-    <Route path="/producto/:id" element={<ProductoDetalle />} />
-  </Routes>
+      <Route path="/carrito" element={<Carrito />} />
+      
+      <Route path="/producto/:id" element={<ProductoDetalle />} />
+    </Routes>
   );
 }
 
