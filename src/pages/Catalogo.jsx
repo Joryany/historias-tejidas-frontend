@@ -1,16 +1,22 @@
 import { useState, useEffect } from 'react';
 import TarjetaProducto from '../components/TarjetaProducto';
 import '../style.css'
-import { Routes, Route, Link } from 'react-router-dom';
-import ProductoDetalle from './ProductoDetalle';
+import { Link, NavLink } from 'react-router-dom';
 
-function App() {
+function Catalogo() {
+ const [cargando, setCargando] = useState(true); 
 
  const [productos, setProductos] = useState([]);   
 
- const [cargando, setCargando] = useState(true); 
-
  const [categoriaActual, setCategoriaActual] = useState("todos");
+
+ const [relacionados, setRelacionados] = useState([]);
+
+ const [busqueda, setBusqueda] = useState("");
+
+ const [orden, setOrden] = useState("defecto");
+
+ 
 
  useEffect(() => {
   
@@ -41,16 +47,55 @@ function App() {
     });
   }
 
+  if (busqueda !== "") {
+    productosAMostrar = productosAMostrar.filter(function(producto) {
+        return producto.nombre.toLowerCase().includes(busqueda.toLowerCase());
+    });
+  }
+
+  if (orden === "precio-menor") {
+    productosAMostrar = [...productosAMostrar].sort((a, b) => a.precio - b.precio);
+    } else if (orden === "precio-mayor") {
+        productosAMostrar = [...productosAMostrar].sort((a, b) => b.precio - a.precio);
+    } else if (orden === "alfabetico") {
+        productosAMostrar = [...productosAMostrar].sort((a, b) => a.nombre.localeCompare(b.nombre));
+    }
+
+
   return (
     <div>
       <header>
-        <img src="public/logo-sin-texto.png" alt="Logo de historias tejidas, un oso y conejos tejidos abrazando un corazón, con el nombre del emprendimiento en grande."/>
+        <img src="/logo-sin-texto.png" alt="Logo de historias tejidas" />
 
         <nav className='navegador_principal'>
-          <a href="/">Inicio</a>
-          <a href="/catalogo" id="nav__a--activo">Catálogo</a>
-          <a href="/personaliza">Personaliza</a>
-          <a href="/carrito" id="navegador_carrito-icono">Carrito</a>
+          <NavLink 
+            to="/" 
+            className={({ isActive }) => isActive ? "nav__a--activo" : ""}
+          >
+            Inicio
+          </NavLink>
+          
+          <NavLink 
+            to="/catalogo" 
+            className={({ isActive }) => isActive ? "nav__a--activo" : ""}
+          >
+            Catálogo
+          </NavLink>
+          
+          <NavLink 
+            to="/personaliza" 
+            className={({ isActive }) => isActive ? "nav__a--activo" : ""}
+          >
+            Personaliza
+          </NavLink>
+          
+          <NavLink 
+            to="/carrito" 
+            id="navegador_carrito-icono"
+            className={({ isActive }) => isActive ? "nav__a--activo" : ""}
+          >
+            Carrito
+          </NavLink>
         </nav>
       </header>
 
@@ -68,6 +113,18 @@ function App() {
 
         <div className='catalogo'>
             <section className="catalogo__buscadores">
+              <input className="buscador"
+                type="text" 
+                placeholder="Buscar amigurumi..." 
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)} 
+              />
+              <select className="ordenador" value={orden} onChange={(e) => setOrden(e.target.value)}>
+                <option value="defecto">Ordenar por defecto</option>
+                <option value="precio-menor">Precio: Menor a Mayor</option>
+                <option value="precio-mayor">Precio: Mayor a Menor</option>
+                <option value="alfabetico">Nombre: A - Z</option>
+            </select>
               <div className="nav__catalogo">
                 <button className={categoriaActual === "todos" ? "boton-categoria activo" : "boton-categoria"} onClick={() => setCategoriaActual("todos")}>Todos</button>
                   <button className={categoriaActual === "animales" ? "boton-categoria activo" : "boton-categoria"} onClick={() => setCategoriaActual("animales")}>Animales</button>
@@ -94,59 +151,45 @@ function App() {
         </div>
       </main>
 
-      <footer>
-      <div className="footer-container">
+            <footer>
+        <div className="footer-container">
 
-        <div className="footer-marca">
-          <img src="public/logo-sin-texto.png" alt="Logo de Historias Tejidas"/>
-          <h2>Historias Tejidas</h2>
-        </div>
-
-        <div className="cont-columna">
-
-          <div className="footer-columna">
-
-            <h3>Navegación</h3>
-
-              <a href="index.html">Inicio</a>
-              <a href="catalogo.html">Catálogo</a>
-              <a href="personaliza.html">Personaliza</a>
-
+          <div className="footer-marca">
+            <img src="/logo-sin-texto.png" alt="Logo de Historias Tejidas" />
+            <h2>Historias Tejidas</h2>
           </div>
 
-          <div className="footer-columna">
+          <div className="cont-columna">
 
-            <h3>Ayuda</h3>
+            <div className="footer-columna">
+              <h3>Navegación</h3>
+              <Link to="/">Inicio</Link>
+              <Link to="/catalogo">Catálogo</Link>
+              <Link to="/personaliza">Personaliza</Link>
+            </div>
+
+            <div className="footer-columna">
+              <h3>Ayuda</h3>
               <a href="#pf">Preguntas frecuentes</a>
-              <a href="contacto.html">Contacto</a>
-          </div>
+              <Link to="/contacto">Contacto</Link>
+            </div>
 
-          <div className="footer-columna">
-            <h3>Información</h3>
-
-              <a href="politica-privacidad.html">
-                Política de privacidad
-             </a>
-
-              <a href="terminos.html">
-                 Términos y condiciones
-              </a>
+            <div className="footer-columna">
+              <h3>Información</h3>
+              <Link to="/politica-privacidad">Política de privacidad</Link>
+              <Link to="/terminos">Términos y condiciones</Link>
+            </div>
+            
           </div>
         </div>
-      </div>
 
         <div className="footer-derechos">
-
-          <p>
-              © 2026 Historias Tejidas. Todos los derechos reservados.
-          </p>
-
+          <p>© 2026 Historias Tejidas. Todos los derechos reservados.</p>
         </div>
-
-    </footer>
+      </footer>
     </div>
   )
 }
 
 
-export default App;
+export default Catalogo;

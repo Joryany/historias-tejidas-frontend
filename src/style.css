@@ -991,6 +991,12 @@ nav #nav__a--activo-:hover {
 
 }
 
+#relacionados {
+    padding: var(--padding-seccion);
+    maxWidth: 1200px;
+    margin: 0 auto;
+}
+
 
 #producto img{
     background: var(--gradiente);
@@ -1039,10 +1045,33 @@ nav #nav__a--activo-:hover {
 
     font-size: 0.85rem;
     max-width: 250px;
-
     
 }
 
+#btn__producto {
+    display: flex; 
+    gap: var(--espacio-sm);
+    margin-top: 20px; 
+}
+
+#btn__producto #favorito { 
+    background: none;
+    border: 2px solid var(--rosa-principal);
+    border-radius: 50%; 
+    width: 50px;
+    height: 50px;
+    font-size: 24px; 
+    cursor: pointer; 
+    color: var(--rosa-principal);
+}
+
+#btn__producto #personalizar { 
+    flex: 1;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    text-decoration: none; 
+}
 
 #producto h1 {
     font-size: 2.5rem;
@@ -1081,6 +1110,8 @@ nav #nav__a--activo-:hover {
       border-radius: var(--radio);
       box-shadow: var(--sombra-media);
 }
+
+
 
 /*  RESPONSIVE — PÁGINA DE PRODUCTO*/
 
@@ -1385,6 +1416,7 @@ nav #nav__a--activo-:hover {
     border-radius: var(--radio);
     padding: var(--boton-y) var(--boton-x);
     font-weight: var(--negrita);
+    box-shadow: 0 0 8px rgba(199, 75, 89, 0.3);
 }
 
 /* RESPONSIVE — MODAL Y CATEGORÍAS*/
@@ -1517,6 +1549,20 @@ nav #nav__a--activo-:hover {
     color: var(--rosa-principal);
     font-size: var(--texto);
     font-family: inherit;
+}
+
+
+.buscador:focus {
+    outline: none; 
+    border: 2px solid var(--rosa-principal); 
+    box-shadow: 0 0 8px rgba(199, 75, 89, 0.3); 
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.ordenador:focus {
+    outline: none;
+    border: 2px solid var(--rosa-principal);
+    box-shadow: 0 0 8px rgba(199, 75, 89, 0.3);
 }
 
 .paginacion {

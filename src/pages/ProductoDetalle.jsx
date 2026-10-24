@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, Link, NavLink } from 'react-router-dom';
+import TarjetaProducto from '../components/TarjetaProducto';
 import '../style.css';
 
 
@@ -8,6 +9,7 @@ function ProductoDetalle() {
   const { id } = useParams(); 
   const [producto, setProducto] = useState(null);
   const [cargando, setCargando] = useState(true);
+  const [relacionados, setRelacionados] = useState([]);
 
     useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/productos/${id}`)
@@ -26,6 +28,20 @@ function ProductoDetalle() {
         setCargando(false);  
       });
   }, [id]); 
+
+  useEffect(() => {
+    if (producto) {
+      fetch(`${import.meta.env.VITE_API_URL}/productos`)
+        .then((respuesta) => respuesta.json())
+        .then((todos) => {
+            const filtrados = todos.filter(function(p) {
+                return p.categoria === producto.categoria && p.id !== producto.id;
+            });
+            setRelacionados(filtrados.slice(0, 4));
+        })
+        .catch((error) => console.error("Error cargando relacionados:", error));
+    }
+  }, [producto]); 
 
 
    if (cargando) {
@@ -86,7 +102,7 @@ function ProductoDetalle() {
         </nav>
       </header>
 
-        <div className="producto-pagina">
+      <div className="producto-pagina">
         
 
         <section id="producto">
@@ -106,6 +122,22 @@ function ProductoDetalle() {
                 ${producto.precio.toLocaleString("es-CO")} COP
             </h2>
 
+            <div id="btn__producto">
+    
+              <button id="favorito"
+                  title="Guardar en favoritos"
+              >
+                  ♡
+              </button>
+              <Link id="personalizar"
+                  to="/personaliza" 
+                  className="button" 
+              >
+                  Personalizar este amigurumi
+              </Link>
+
+          </div>
+
             <div id="producto__container--especificaciones">
                 
                 <div className="container__especificaciones--elemento">
@@ -119,12 +151,29 @@ function ProductoDetalle() {
                 </div>
 
             </div>
-
-            </div>
+          </div>
         </section>
-        </div>
+        <section>
+          <h2>También te podría gustar</h2>
+                  
+          <div className="tarjeta-container">
+            {relacionados.map(function(prod) {
+                return (
+            <TarjetaProducto 
+              key={prod.id}
+                id={prod.id}
+                nombre={prod.nombre} 
+                precio={prod.precio} 
+                imagen={prod.imagen}
+                alt={prod.alt}
+              />
+            );
+            })}
+          </div>
+        </section>    
+      </div>
 
-              <footer>
+      <footer>
         <div className="footer-container">
 
           <div className="footer-marca">
