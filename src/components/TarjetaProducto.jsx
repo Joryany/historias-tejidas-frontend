@@ -4,7 +4,7 @@ function TarjetaProducto(props) {
     return (
         <article className='tarjeta'>
             
-            <img src={`/${props.imagen.replace("assets/img/", "img/")}`} alt={props.alt} />
+            <img src={`/${props.imagen.replace("assets/img/", "")}`} alt={props.alt} />
             
             <div className='tarjeta_informacion'>
                 <h3>{props.nombre}</h3>
