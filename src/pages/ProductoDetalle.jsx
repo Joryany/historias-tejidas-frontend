@@ -109,7 +109,7 @@ function ProductoDetalle() {
 
             <img 
             id="imagen" 
-            src={`/${producto.imagen.replace("assets/img/", "public/")}`} 
+            src={`/${producto.imagen.replace("assets/img/", "img/")}`} 
             alt={producto.alt} 
             />
 

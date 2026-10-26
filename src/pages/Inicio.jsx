@@ -5,7 +5,7 @@ function Inicio() {
   return (
     <div>
       <header>
-        <img src="public/logo-sin-texto.png" alt="Logo de historias tejidas" />
+        <img src="/logo-sin-texto.png" alt="Logo de historias tejidas" />
 
         <nav className='navegador_principal'>
           <NavLink 
@@ -43,7 +43,7 @@ function Inicio() {
         <div className="hero">
           <div className="hero-overlay"></div>
           <img 
-            src="public/lanas-tipo-fondo.png" 
+            src="/lanas-tipo-fondo.png" 
             alt="Lanas de varios tonos de rosado alineadas de forma consecutiva con flores alrededor." 
           />
           <div className="container">
@@ -89,7 +89,7 @@ function Inicio() {
 
           <div className="tarjeta-container">
             <article className="tarjeta">
-              <img src="public/catálogo/elprincipito.png" alt="Amigurumi del personaje el principito junto al zorro en la luna con una rosa." />
+              <img src="/catálogo/elprincipito.png" alt="Amigurumi del personaje el principito junto al zorro en la luna con una rosa." />
               <div className="producto-info">
                 <h3>El Principito-Combo completo</h3>
                 <p className="precio">$150.000 COP</p>
@@ -98,7 +98,7 @@ function Inicio() {
             </article>
 
             <article className="tarjeta">
-              <img src="public/catálogo/peery.png" alt="Amigurumi de Perry el Ornitorrinco." />
+              <img src="/catálogo/peery.png" alt="Amigurumi de Perry el Ornitorrinco." />
               <div className="producto-info">
                 <h3>Perry el Ornitorrinco</h3>
                 <p className="precio">$40.000 COP</p>
@@ -107,7 +107,7 @@ function Inicio() {
             </article>
 
             <article className="tarjeta">
-              <img src="public/productos/muñeca.png" alt="Amigurumis de una muñeca que representa a una persona." />
+              <img src="/productos/muñeca.png" alt="Amigurumis de una muñeca que representa a una persona." />
               <div className="producto-info">
                 <h3>Esa persona ideal</h3>
                 <p className="precio">$100.000 COP</p>
@@ -128,23 +128,23 @@ function Inicio() {
 
           <div className="categorias-grid">
             <Link to="/catalogo" className="categoria">
-              <img src="public/catálogo/capibara.png" alt="Animales tejidos" />
+              <img src="/catálogo/capibara.png" alt="Animales tejidos" />
               <h3>Animales</h3>
             </Link>
             <Link to="/catalogo" className="categoria">
-              <img src="public/catálogo/cadaver-novia.png" alt="Personajes" />
+              <img src="/catálogo/cadaver-novia.png" alt="Personajes" />
               <h3>Personajes</h3>
             </Link>
             <Link to="/catalogo" className="categoria">
-              <img src="public/catálogo/chimuelo-pareja.png" alt="Parejas" />
+              <img src="/catálogo/chimuelo-pareja.png" alt="Parejas" />
               <h3>Parejas/Dúos</h3>
             </Link>
             <Link to="/catalogo" className="categoria">
-              <img src="public/catálogo/flor-rapunzel.png" alt="Regalos y accesorios" />
+              <img src="/catálogo/flor-rapunzel.png" alt="Regalos y accesorios" />
               <h3>Regalos y accesorios</h3>
             </Link>
             <Link to="/personaliza" className="categoria">
-              <img src="public/productos/pareja.png" alt="Personalizados" />
+              <img src="/productos/pareja.png" alt="Personalizados" />
               <h3>Personalizados</h3>
             </Link>
           </div>
@@ -230,7 +230,7 @@ function Inicio() {
       <footer>
         <div className="footer-container">
           <div className="footer-marca">
-            <img src="public/logo-sin-texto.png" alt="Logo de Historias Tejidas" />
+            <img src="/logo-sin-texto.png" alt="Logo de Historias Tejidas" />
             <h2>Historias Tejidas</h2>
           </div>
           <div className="cont-columna">

@@ -101,7 +101,7 @@ function Catalogo() {
 
        <main>
         <section className="hero">
-            <img src="public/flores-de-cerezo.png"
+            <img src="/flores-de-cerezo.png"
                 alt="En un fondo rosado claro en la zona derecha hay flores de cerezo repartidas por dicha zona."/>
             <div className="hero-overlay"></div>
             <div className="container">
