@@ -93,7 +93,7 @@ function Inicio() {
               <div className="producto-info">
                 <h3>El Principito-Combo completo</h3>
                 <p className="precio">$150.000 COP</p>
-                <Link className="button" to="/catalogo?el-principito">Ver producto</Link>
+                <Link className="button" to="/producto/el-principito">Ver producto</Link>
               </div>
             </article>
 
@@ -102,7 +102,7 @@ function Inicio() {
               <div className="producto-info">
                 <h3>Perry el Ornitorrinco</h3>
                 <p className="precio">$40.000 COP</p>
-                <Link to="/catalogo?perry-acostado" className="button">Ver producto</Link>
+                <Link className="button" to="/producto/perry-acostado">Ver producto</Link>
               </div>
             </article>
 
@@ -149,8 +149,7 @@ function Inicio() {
             </Link>
           </div>
         </section>
-
-        {/* Sección Cómo Funciona */}
+        
         <section className="funciona">
           <span>Tu historia, paso a paso</span>
           <h2>¿Cómo funciona?</h2>
@@ -178,19 +177,7 @@ function Inicio() {
           </div>
         </section>
 
-        {/* Sección Personalización Banner */}
-        <section className="personalizacion">
-          <span>Hazlo tuyo</span>
-          <div className="per-contenido">
-            <h2>Tu historia no tiene que parecerse a ninguna otra.</h2>
-            <p>Cuéntanos qué quieres representar y crea un amigurumi inspirado en esa persona, mascota, recuerdo o idea.</p>
-          </div>
-          <div className="boton-wrapper">
-            <Link to="/personaliza" className="button">Crear mi amigurumi</Link>
-          </div>
-        </section>
-
-        {/* Sección Reseñas */}
+    
         <section className="reseñas">
           <span>Historias que ya fueron tejidas</span>
           <div className="res-contenido">
@@ -213,11 +200,11 @@ function Inicio() {
           </div>
         </section>
 
-        {/* Sección Sobre Nosotros */}
+        {/* <--abrir un modal--> en esta seccion de sobre nosotros */}
         <section className="sobre-nosotros">
           <div className="sobre-contenido">
             <span>Nuestra historia</span>
-            <h2>Tejemos mucho más que figuras</h2>
+            <h2>¿Quienes Somos?</h2>
             <p>Historias Tejidas nació de una idea sencilla: convertir aquello que significa algo para nosotros en algo que podamos conservar.</p>
             <p>Cada creación combina tejido, imaginación y detalles pensados para que cada pieza tenga una historia propia.</p>
             <div className="boton-wrapper">
@@ -226,16 +213,18 @@ function Inicio() {
           </div>
         </section>
 
-        {/* Sección Llamado a la Acción final */}
-        <section className="historia">
-          <div className="accion">
-            <h2>¿Qué historia quieres tejer?</h2>
-            <p>Puede ser una persona, una mascota, un recuerdo o simplemente una idea que quieras convertir en algo tangible.</p>
+         <section className="personalizacion">
+          <span>Hazlo tuyo</span>
+          <div className="per-contenido">
+            <h2>Tu historia no tiene que parecerse a ninguna otra.</h2>
+            <p>Cuéntanos qué quieres representar y crea un amigurumi inspirado en esa persona, mascota, recuerdo o idea.</p>
           </div>
           <div className="boton-wrapper">
-            <Link to="/personaliza" className="button">Crear mi historia</Link>
+            <Link to="/personaliza" className="button">Crear mi amigurumi</Link>
           </div>
         </section>
+
+        
       </main>
 
       <footer>

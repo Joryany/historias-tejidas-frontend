@@ -129,11 +129,8 @@ function ProductoDetalle() {
               >
                   ♡
               </button>
-              <Link id="personalizar"
-                  to="/personaliza" 
-                  className="button" 
-              >
-                  Personalizar este amigurumi
+             <Link id="personalizar" to={`/personaliza/${producto.id}`} className="button">
+                Personalizar este amigurumi
               </Link>
 
           </div>

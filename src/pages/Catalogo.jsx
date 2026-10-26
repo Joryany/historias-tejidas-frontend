@@ -124,15 +124,40 @@ function Catalogo() {
                 <option value="precio-menor">Precio: Menor a Mayor</option>
                 <option value="precio-mayor">Precio: Mayor a Menor</option>
                 <option value="alfabetico">Nombre: A - Z</option>
-            </select>
-              <div className="nav__catalogo">
-                <button className={categoriaActual === "todos" ? "boton-categoria activo" : "boton-categoria"} onClick={() => setCategoriaActual("todos")}>Todos</button>
-                  <button className={categoriaActual === "animales" ? "boton-categoria activo" : "boton-categoria"} onClick={() => setCategoriaActual("animales")}>Animales</button>
-                  <button className={categoriaActual === "personajes" ? "boton-categoria activo" : "boton-categoria"}  onClick={() => setCategoriaActual("personajes")}>Personajes</button>
-                  <button className={categoriaActual === "parejas" ? "boton-categoria activo" : "boton-categoria"} onClick={() => setCategoriaActual("parejas")}>Parejas</button>
-                  <button className={categoriaActual === "regalo" ? "boton-categoria activo" : "boton-categoria"} onClick={() => setCategoriaActual("regalo")}>Regalos</button>
-              </div>
+              </select>
             </section>
+
+            <div className="nav__catalogo">
+              <button 
+                className={categoriaActual === "todos" ? "boton-categoria nav__a--activo" : "boton-categoria"} 
+                onClick={() => setCategoriaActual("todos")}>
+                Todos
+              </button>
+              
+              <button 
+                className={categoriaActual === "animales" ? "boton-categoria nav__a--activo" : "boton-categoria"} 
+                onClick={() => setCategoriaActual("animales")}>
+                Animales
+              </button>
+
+              <button 
+                className={categoriaActual === "personajes" ? "boton-categoria nav__a--activo" : "boton-categoria"} 
+                onClick={() => setCategoriaActual("personajes")}>
+                Personajes
+              </button>
+
+              <button 
+                className={categoriaActual === "parejas" ? "boton-categoria nav__a--activo" : "boton-categoria"} 
+                onClick={() => setCategoriaActual("parejas")}>
+                Parejas
+              </button>
+
+              <button 
+                className={categoriaActual === "regalo" ? "boton-categoria nav__a--activo" : "boton-categoria"} 
+                onClick={() => setCategoriaActual("regalo")}>
+                Regalos
+              </button>
+            </div>
 
           <section className='tarjeta-container'>
             {productosAMostrar.map(function(producto) {
@@ -151,7 +176,7 @@ function Catalogo() {
         </div>
       </main>
 
-            <footer>
+      <footer>
         <div className="footer-container">
 
           <div className="footer-marca">

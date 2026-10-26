@@ -13,9 +13,7 @@ function App() {
       
       <Route path="/catalogo" element={<Catalogo />} />
       
-   
-      <Route path="/personaliza" element={<Personaliza />} />
-      
+      <Route path="/personaliza/:idProducto?" element={<Personaliza />} />
     
       <Route path="/carrito" element={<Carrito />} />
       

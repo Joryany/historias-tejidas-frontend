@@ -1409,7 +1409,7 @@ nav #nav__a--activo-:hover {
     color: var(--rosa-crema);
 }
 
-.activo {
+.nav__catalogo--activo {
     background-color: var(--frambuesa);
     color: var(--blanco);
     border: 2px solid var(--rosa-oscuro);
@@ -1688,3 +1688,374 @@ nav #nav__a--activo-:hover {
     gap: var(--espacio-md);
     padding: var(--espacio-md);
 }
+
+
+/* ---------- Personaliza ---------- */
+
+.pagina-personaliza {
+    width: min(94%, 1100px);
+    margin: 42px auto 65px;
+    padding: 0;
+    box-sizing: border-box;
+    color: #6B202A;
+}
+
+/* ---------- TÍTULO PRINCIPAL ---------- */
+
+.pagina-personaliza > h1 {
+    margin: 0 0 32px;
+    color: #D3485B;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.5rem, 4.5vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-shadow: 0 2px 3px rgba(107, 32, 42, 0.10);
+}
+
+/* ---------- INFORMACIÓN DEL PRODUCTO ---------- */
+
+.pagina-personaliza .personaliza__informacion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: min(100%, 850px);
+    margin: 0 auto 28px;
+    padding: 24px;
+    box-sizing: border-box;
+    text-align: center;
+    background: #FAF0EB;
+    border: 1px solid #E8BDB7;
+    border-radius: 28px;
+    box-shadow: 0 5px 12px rgba(89, 43, 43, 0.18);
+}
+
+/* Ocultar la tarjeta si no hay producto seleccionado */
+
+.pagina-personaliza .personaliza__informacion:not(:has(p, img)) {
+    display: none;
+}
+
+.pagina-personaliza .personaliza__informacion p {
+    margin: 0;
+    color: #6B202A;
+    font-size: 1.15rem;
+    line-height: 1.6;
+}
+
+.pagina-personaliza .personaliza__informacion img {
+    display: block;
+    width: 220px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    border: 2px solid #F6D6CD;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(89, 43, 43, 0.15);
+}
+
+/* ---------- FORMULARIO ---------- */
+
+.pagina-personaliza > form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: min(100%, 850px);
+    margin: 0 auto;
+    padding: clamp(24px, 4vw, 42px);
+    box-sizing: border-box;
+    background: #FAF0EB;
+    border: 1px solid #E8BDB7;
+    border-radius: 30px;
+    box-shadow: 0 5px 14px rgba(89, 43, 43, 0.20);
+}
+
+/* ---------- ETIQUETAS ---------- */
+
+.pagina-personaliza > form > label {
+    display: block;
+    margin-top: 14px;
+    color: #842C43;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.12rem;
+    font-weight: 700;
+    line-height: 1.55;
+}
+
+.pagina-personaliza > form > label:first-child {
+    margin-top: 0;
+}
+
+/* ---------- CAMPOS DE ENTRADA ---------- */
+
+.pagina-personaliza > form > input,
+.pagina-personaliza > form > select,
+.pagina-personaliza > form > textarea {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 54px;
+    margin: 0;
+    padding: 14px 16px;
+    box-sizing: border-box;
+
+    color: #6B202A;
+    background: #FFF7F3;
+    border: 1.5px solid #F2C9C0;
+    border-radius: 15px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.5;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+/* Texto de ejemplo */
+
+.pagina-personaliza > form > input::placeholder,
+.pagina-personaliza > form > textarea::placeholder {
+    color: #8F3F5F;
+    opacity: 0.75;
+}
+
+/* Estado de enfoque */
+
+.pagina-personaliza > form > input:focus,
+.pagina-personaliza > form > select:focus,
+.pagina-personaliza > form > textarea:focus {
+    outline: none;
+    border-color: #D96B64;
+    background: #FFFDF9;
+    box-shadow: 0 0 0 4px rgba(217, 107, 100, 0.15);
+}
+
+/* Listas desplegables */
+
+.pagina-personaliza > form > select {
+    cursor: pointer;
+}
+
+/* Campo de descripción */
+
+.pagina-personaliza > form > textarea {
+    min-height: 160px;
+    resize: vertical;
+}
+
+/* Fecha de entrega */
+
+.pagina-personaliza > form > input[type="date"] {
+    cursor: pointer;
+}
+
+/* ---------- BOTÓN DE ENVÍO ---------- */
+
+.pagina-personaliza > form > button.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+
+    width: fit-content;
+    min-width: 260px;
+    min-height: 54px;
+    margin-top: 24px;
+    padding: 14px 28px;
+    box-sizing: border-box;
+
+    color: #FFF8F2;
+    background: #E8797D;
+    border: 1px solid #D96B64;
+    border-radius: 999px;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: center;
+
+    cursor: pointer;
+    box-shadow: 0 4px 9px rgba(107, 32, 42, 0.16);
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.pagina-personaliza > form > button.button:hover {
+    color: #FFF8F2;
+    background: #D95768;
+    border-color: #C74B59;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(107, 32, 42, 0.20);
+}
+
+.pagina-personaliza > form > button.button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(107, 32, 42, 0.15);
+}
+
+.pagina-personaliza > form > button.button:focus-visible {
+    outline: 3px solid #D96B64;
+    outline-offset: 4px;
+}
+
+/* ---------- MENSAJE DE CONFIRMACIÓN ---------- */
+
+.pagina-personaliza > div:has(> h3) {
+    width: min(100%, 850px);
+    margin: 0 auto;
+    padding: clamp(24px, 4vw, 40px);
+    box-sizing: border-box;
+
+    text-align: center;
+    background: #FAF0EB;
+    border: 1px solid #E8BDB7;
+    border-radius: 30px;
+    box-shadow: 0 5px 14px rgba(89, 43, 43, 0.20);
+}
+
+.pagina-personaliza > div > h3 {
+    color: #D3485B;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+    line-height: 1.3;
+}
+
+.pagina-personaliza > div > p {
+    color: #6B202A;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.pagina-personaliza > div > a {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 13px 24px;
+
+    color: #FFF8F2;
+    background: #E8797D;
+    border: 1px solid #D96B64;
+    border-radius: 999px;
+
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition: background-color 0.2s ease;
+}
+
+.pagina-personaliza > div > a:hover {
+    color: #FFF8F2;
+    background: #D95768;
+}
+
+
+.pagina-personaliza .ht-calendario__campo span {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    color: inherit;
+    font: inherit;
+}
+/* ---------- TABLET ---------- */
+
+@media (max-width: 800px) {
+    .pagina-personaliza {
+        width: 94%;
+        margin-top: 32px;
+    }
+
+    .pagina-personaliza > h1 {
+        font-size: clamp(2.2rem, 5vw, 2.8rem);
+    }
+
+    .pagina-personaliza > form {
+        padding: 28px;
+    }
+}
+
+/* ---------- MÓVILES ---------- */
+
+@media (max-width: 600px) {
+    .pagina-personaliza {
+        width: calc(100% - 24px);
+        margin: 28px auto 40px;
+    }
+
+    .pagina-personaliza > h1 {
+        margin-bottom: 24px;
+        font-size: 2.2rem;
+    }
+
+    .pagina-personaliza .personaliza__informacion {
+        padding: 18px;
+        border-radius: 22px;
+    }
+
+    .pagina-personaliza .personaliza__informacion p {
+        font-size: 1rem;
+    }
+
+    .pagina-personaliza > form {
+        gap: 8px;
+        padding: 22px 18px;
+        border-radius: 24px;
+    }
+
+    .pagina-personaliza > form > label {
+        font-size: 1.05rem;
+    }
+
+    .pagina-personaliza > form > input,
+    .pagina-personaliza > form > select,
+    .pagina-personaliza > form > textarea {
+        min-height: 52px;
+        padding: 13px;
+        font-size: 16px;
+    }
+
+    .pagina-personaliza > form > textarea {
+        min-height: 140px;
+    }
+
+    .pagina-personaliza > form > button.button {
+        width: 100%;
+        min-width: 0;
+        min-height: 54px;
+        margin-top: 20px;
+        font-size: 1.05rem;
+    }
+
+    .pagina-personaliza > div:has(> h3) {
+        padding: 24px 18px;
+        border-radius: 24px;
+    }
+
+    .pagina-personaliza > div > h3 {
+        font-size: 1.65rem;
+    }
+}
+
+/* ---------- ACCESIBILIDAD ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .pagina-personaliza > form > input,
+    .pagina-personaliza > form > select,
+    .pagina-personaliza > form > textarea,
+    .pagina-personaliza > form > button.button,
+    .pagina-personaliza > div > a {
+        transition: none;
+    }
+}
+
