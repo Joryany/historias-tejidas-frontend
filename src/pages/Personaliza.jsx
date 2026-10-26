@@ -64,11 +64,12 @@ function Personaliza() {
             <p>Estás modificando a: "{nombreProducto}"</p>
           )}
           
-          {idProducto && (
+         {idProducto && (
             <img 
               src={`/${imagenProducto.replace("assets/img/", "img/")}`} 
               alt={nombreProducto} 
-          />
+            />
+          )}
         </section>
         
 
