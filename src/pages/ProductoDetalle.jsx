@@ -108,11 +108,10 @@ function ProductoDetalle() {
         <section id="producto">
 
             <img 
-            id="imagen" 
-            src={`/${producto.imagen.replace("assets/img/", "img/")}`} 
-            alt={producto.alt} 
-            />
-
+              id="imagen" 
+              src={`/${producto.imagen.replace("assets/img/", "img/")}`} 
+              alt={producto.alt} 
+          />
             <div id="producto__container">
             <span id="etiqueta">{producto.etiqueta}</span>
             

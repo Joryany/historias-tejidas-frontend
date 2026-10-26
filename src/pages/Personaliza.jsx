@@ -66,11 +66,9 @@ function Personaliza() {
           
           {idProducto && (
             <img 
-              src={`/${imagenProducto.replace("assets/img/", "public/")}`} 
+              src={`/${imagenProducto.replace("assets/img/", "img/")}`} 
               alt={nombreProducto} 
-              style={{ width: "150px", borderRadius: "15px", marginTop: "10px" }}
-            />
-          )}
+          />
         </section>
         
 
