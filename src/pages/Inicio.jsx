@@ -5,37 +5,14 @@ function Inicio() {
   return (
     <div>
       <header>
-        <img src="/logo-sin-texto.png" alt="Logo de historias tejidas" />
-
+        <img src="/logo-sin-texto.png" alt="Logo" />
         <nav className='navegador_principal'>
-          <NavLink 
-            to="/" 
-            className={({ isActive }) => isActive ? "nav__a--activo" : ""}
-          >
-            Inicio
-          </NavLink>
-          
-          <NavLink 
-            to="/Catalogo" 
-            className={({ isActive }) => isActive ? "nav__a--activo" : ""}
-          >
-            Catálogo
-          </NavLink>
-          
-          <NavLink 
-            to="/Personaliza" 
-            className={({ isActive }) => isActive ? "nav__a--activo" : ""}
-          >
-            Personaliza
-          </NavLink>
-          
-          <NavLink 
-            to="/Carrito" 
-            id="navegador_carrito-icono"
-            className={({ isActive }) => isActive ? "nav__a--activo" : ""}
-          >
-            Carrito
-          </NavLink>
+          <NavLink to="/" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Inicio</NavLink>
+          <NavLink to="/catalogo" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Catálogo</NavLink>
+          <NavLink to="/personaliza" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Personaliza</NavLink>
+          <NavLink to="/carrito" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Carrito</NavLink>
+          <NavLink to="/favoritos" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>♥</NavLink>
+        
         </nav>
       </header>
 

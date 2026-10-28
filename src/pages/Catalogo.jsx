@@ -3,6 +3,10 @@ import TarjetaProducto from '../components/TarjetaProducto';
 import '../style.css'
 import { Link, NavLink } from 'react-router-dom';
 
+function mezclarAleatoriamente(array) {
+  return [...array].sort(() => Math.random() - 0.5);
+}
+
 function Catalogo() {
  const [cargando, setCargando] = useState(true); 
 
@@ -41,7 +45,11 @@ function Catalogo() {
 
   let productosAMostrar = productos;
 
-  if (categoriaActual !== "todos") {
+
+  if (categoriaActual === "todos") {
+    
+    productosAMostrar = mezclarAleatoriamente(productos);
+  } else {
     productosAMostrar = productos.filter(function(producto) {
       return producto.categoria === categoriaActual;
     });
@@ -65,37 +73,13 @@ function Catalogo() {
   return (
     <div>
       <header>
-        <img src="/logo-sin-texto.png" alt="Logo de historias tejidas" />
-
+        <img src="/logo-sin-texto.png" alt="Logo" />
         <nav className='navegador_principal'>
-          <NavLink 
-            to="/" 
-            className={({ isActive }) => isActive ? "nav__a--activo" : ""}
-          >
-            Inicio
-          </NavLink>
-          
-          <NavLink 
-            to="/catalogo" 
-            className={({ isActive }) => isActive ? "nav__a--activo" : ""}
-          >
-            Catálogo
-          </NavLink>
-          
-          <NavLink 
-            to="/personaliza" 
-            className={({ isActive }) => isActive ? "nav__a--activo" : ""}
-          >
-            Personaliza
-          </NavLink>
-          
-          <NavLink 
-            to="/carrito" 
-            id="navegador_carrito-icono"
-            className={({ isActive }) => isActive ? "nav__a--activo" : ""}
-          >
-            Carrito
-          </NavLink>
+          <NavLink to="/" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Inicio</NavLink>
+          <NavLink to="/catalogo" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Catálogo</NavLink>
+          <NavLink to="/personaliza" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Personaliza</NavLink>
+          <NavLink to="/carrito" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Carrito</NavLink>
+          <NavLink to="/favoritos" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>♥</NavLink>
         </nav>
       </header>
 

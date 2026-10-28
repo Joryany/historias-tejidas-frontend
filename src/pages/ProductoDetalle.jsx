@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, NavLink } from 'react-router-dom';
 import TarjetaProducto from '../components/TarjetaProducto';
 import '../style.css';
@@ -10,6 +10,90 @@ function ProductoDetalle() {
   const [producto, setProducto] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [relacionados, setRelacionados] = useState([]);
+
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const [selecciones, setSelecciones] = useState({});
+  const [precioFinal, setPrecioFinal] = useState(0);
+
+
+  const carruselRef = useRef(null);
+
+  const moverIzquierda = () => {
+    carruselRef.current.scrollBy({ left: -250, behavior: "smooth" });
+  };
+
+  const moverDerecha = () => {
+    carruselRef.current.scrollBy({ left: 250, behavior: "smooth" });
+  };
+
+ 
+  const manejarCambioOpcion = (grupoNombre, item, indexGrupo) => {
+    const nuevasSelecciones = {
+      ...selecciones,
+      [grupoNombre]: item
+    };
+    setSelecciones(nuevasSelecciones);
+
+    let precioCalculado = producto.precio;
+    
+    Object.values(nuevasSelecciones).forEach((seleccion) => {
+        if (seleccion.multiplicador) {
+            precioCalculado = precioCalculado * seleccion.multiplicador;
+        }
+    });
+
+    setPrecioFinal(precioCalculado);
+  };
+
+  // ========== FUNCIONES PARA EL CARRITO Y FAVORITOS ==========
+
+  const agregarAlCarrito = () => {
+   
+    const carritoGuardado = JSON.parse(localStorage.getItem("carritoHT")) || [];
+    
+    
+    const productoParaCarrito = {
+      id: producto.id,
+      nombre: producto.nombre,
+      imagen: producto.imagen,
+      alt: producto.alt,
+      precioBase: producto.precio,
+      precioFinal: precioFinal, 
+      cantidad: 1,
+      selecciones: selecciones 
+    };
+
+
+    const nuevoCarrito = [...carritoGuardado, productoParaCarrito];
+  
+    localStorage.setItem("carritoHT", JSON.stringify(nuevoCarrito));
+    
+   
+    alert("¡Añadido al carrito!");
+    setModalAbierto(false);
+  };
+
+  const toggleFavorito = () => {
+    
+    const favoritosGuardados = JSON.parse(localStorage.getItem("favoritosHT")) || [];
+   
+    const yaEsFavorito = favoritosGuardados.includes(producto.id);
+
+    let nuevosFavoritos;
+    if (yaEsFavorito) {
+   
+      nuevosFavoritos = favoritosGuardados.filter(id => id !== producto.id);
+    } else {
+    // Si no está, lo agregamos
+      nuevosFavoritos = [...favoritosGuardados, producto.id];
+    }
+
+  
+    localStorage.setItem("favoritosHT", JSON.stringify(nuevosFavoritos));
+    
+   
+    window.location.reload(); 
+  };
 
     useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/productos/${id}`)
@@ -29,7 +113,7 @@ function ProductoDetalle() {
       });
   }, [id]); 
 
-  useEffect(() => {
+   useEffect(() => {
     if (producto) {
       fetch(`${import.meta.env.VITE_API_URL}/productos`)
         .then((respuesta) => respuesta.json())
@@ -37,7 +121,10 @@ function ProductoDetalle() {
             const filtrados = todos.filter(function(p) {
                 return p.categoria === producto.categoria && p.id !== producto.id;
             });
-            setRelacionados(filtrados.slice(0, 4));
+            
+            
+            const mezclados = [...filtrados].sort(() => Math.random() - 0.5);
+            setRelacionados(mezclados.slice(0, 6));
         })
         .catch((error) => console.error("Error cargando relacionados:", error));
     }
@@ -66,109 +153,162 @@ function ProductoDetalle() {
     return (
     <div>
         <header>
-        <img src="/logo-sin-texto.png" alt="Logo de historias tejidas, un oso y conejos tejidos abrazando un corazón, con el nombre del emprendimiento en grande."/>
-
+        <img src="/logo-sin-texto.png" alt="Logo" />
         <nav className='navegador_principal'>
-  
-            <NavLink 
-                to="/" 
-                className={({ isActive }) => isActive ? "nav__a--activo" : ""}
-            >
-                Inicio
-            </NavLink>
-
-            <NavLink 
-                to="/catalogo" 
-                className={({ isActive }) => isActive ? "nav__a--activo" : ""}
-            >
-                Catálogo
-            </NavLink>
-
-            <NavLink 
-                to="/personaliza" 
-                className={({ isActive }) => isActive ? "nav__a--activo" : ""}
-            >
-                Personaliza
-            </NavLink>
-
-            <NavLink 
-                to="/carrito" 
-                id="navegador_carrito-icono"
-                className={({ isActive }) => isActive ? "nav__a--activo-carrito" : ""}
-            >
-                Carrito
-            </NavLink>
-
+          <NavLink to="/" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Inicio</NavLink>
+          <NavLink to="/catalogo" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Catálogo</NavLink>
+          <NavLink to="/personaliza" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Personaliza</NavLink>
+          <NavLink to="/carrito" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Carrito</NavLink>
+          <NavLink to="/favoritos" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>♥</NavLink>
+        
         </nav>
       </header>
 
-      <div className="producto-pagina">
-        
+      <main>
+        <div className="producto-pagina">
+          
 
-        <section id="producto">
+          <section id="producto">
 
-            <img 
-    id="imagen" 
-    src={`/${producto.imagen.replace("assets/img/", "")}`} 
-    alt={producto.alt} 
-/>
-            <div id="producto__container">
-            <span id="etiqueta">{producto.etiqueta}</span>
-            
-            <h1 id="nombre">{producto.nombre}</h1>
-            
-            <h2 id="precio">
-                ${producto.precio.toLocaleString("es-CO")} COP
-            </h2>
+              <img 
+                id="imagen" 
+                src={`/${producto.imagen.replace("assets/img/", "")}`} 
+                alt={producto.alt} />
+              <div id="producto__container">
+              <span id="etiqueta">{producto.etiqueta}</span>
+              
+              <h1 id="nombre">{producto.nombre}</h1>
+              
+              <h2 id="precio">
+                  ${producto.precio.toLocaleString("es-CO")} COP
+              </h2>
 
-            <div id="btn__producto">
-    
-              <button id="favorito"
-                  title="Guardar en favoritos"
-              >
-                  ♡
-              </button>
-             <Link id="personalizar" to={`/personaliza/${producto.id}`} className="button">
-                Personalizar este amigurumi
-              </Link>
-
-          </div>
-
-            <div id="producto__container--especificaciones">
+              <div id="btn__producto">
                 
-                <div className="container__especificaciones--elemento">
-                <h3>La historia detrás del tejido</h3>
-                <p id="historia__p">{producto.historia}</p>
-                </div>
+              
+                <button 
+                  id="favorito" 
+                  title="Guardar en favoritos" 
+                  onClick={toggleFavorito}
+                >
+                  {JSON.parse(localStorage.getItem("favoritosHT"))?.includes(producto.id) ? "♥" : "♡"}
+                </button>
+                
+                <button 
+                className="button" 
+                onClick={() => {
+                  setModalAbierto(true);
+                  
+                 
+                  let precioInicial = producto.precio;
+                  const seleccionesIniciales = {};
 
-                <div className="container__especificaciones--elemento">
-                <h4>Materiales del amigurumi</h4>
-                <p id="materiales__p">{producto.materiales}</p>
-                </div>
+                  if (producto.opciones) {
+                      producto.opciones.forEach((grupo) => {
+                          const primerItem = grupo.items[0];
+                          seleccionesIniciales[grupo.nombre] = primerItem;
+                          if (primerItem.multiplicador) {
+                              precioInicial = precioInicial * primerItem.multiplicador;
+                          }
+                      });
+                  }
+
+                  setSelecciones(seleccionesIniciales);
+                  setPrecioFinal(precioInicial);
+                }}
+              >
+                Comprar
+              </button>
+
+                <Link to={`/personaliza/${producto.id}`} className="button">
+                  Personalizar
+                </Link>
+
+              </div>
+
+              <div id="producto__container--especificaciones">
+                  
+                  <div className="container__especificaciones--elemento">
+                  <h3>La historia detrás del tejido</h3>
+                  <p id="historia__p">{producto.historia}</p>
+                  </div>
+
+                  <div className="container__especificaciones--elemento">
+                  <h4>Materiales del amigurumi</h4>
+                  <p id="materiales__p">{producto.materiales}</p>
+                  </div>
+
+              </div>
+            </div>
+          </section>
+          <section className="gustar">
+            <h2>También te podría gustar</h2>
+            
+            <div className="carrusel-wrapper">
+              <button className="btn-flecha" onClick={moverIzquierda}>←</button>
+              
+              <div className="carrusel-relacionados" ref={carruselRef}>
+                {relacionados.map(function(prod) {
+                    return (
+                        <div className="carrusel-item" key={prod.id}>
+                            <TarjetaProducto 
+                                id={prod.id}
+                                nombre={prod.nombre} 
+                                precio={prod.precio} 
+                                imagen={prod.imagen}
+                                alt={prod.alt}
+                            />
+                        </div>
+                    );
+                })}
+              </div>
+
+              <button className="btn-flecha" onClick={moverDerecha}>→</button>
+            </div>
+          </section>
+        </div>
+
+        {modalAbierto && (
+          <div className="modal-overlay activo" onClick={() => setModalAbierto(false)}>
+            <div className="modal-cuadro" onClick={(e) => e.stopPropagation()}>
+              
+              <button className="modal-cerrar" onClick={() => setModalAbierto(false)}>✕</button>
+              
+              <h2>Personaliza tu {producto.nombre}</h2>
+              
+              {producto.opciones && producto.opciones.length > 0 ? (
+                producto.opciones.map((grupo, indexGrupo) => (
+                  <div className="grupo-modal" key={indexGrupo}>
+                    <h3>{grupo.nombre}</h3>
+                    {grupo.items.map((item, indexItem) => (
+                      <label className="opcion-modal" key={indexItem}>
+                        <input 
+                          type="radio" 
+                          name={`grupo-${indexGrupo}`} 
+                          value={item.value}
+                          defaultChecked={indexItem === 0}
+                          onChange={() => manejarCambioOpcion(grupo.nombre, item, indexGrupo)} 
+                        />
+                        {item.nombre} 
+                      </label>
+                    ))}
+                  </div>
+                ))
+              ) : (
+                <p>Este producto no tiene opciones adicionales.</p>
+              )}
+
+              <div className="modal-footer">
+                <h3>Total: ${precioFinal.toLocaleString("es-CO")} COP</h3>
+                <button className="button" onClick={agregarAlCarrito}>
+                  Añadir al Carrito
+                </button>
+              </div>
 
             </div>
           </div>
-        </section>
-        <section>
-          <h2>También te podría gustar</h2>
-                  
-          <div className="tarjeta-container">
-            {relacionados.map(function(prod) {
-                return (
-            <TarjetaProducto 
-              key={prod.id}
-                id={prod.id}
-                nombre={prod.nombre} 
-                precio={prod.precio} 
-                imagen={prod.imagen}
-                alt={prod.alt}
-              />
-            );
-            })}
-          </div>
-        </section>    
-      </div>
-
+        )}
+      </main>
       <footer>
         <div className="footer-container">
 
