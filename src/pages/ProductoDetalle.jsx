@@ -172,8 +172,9 @@ function ProductoDetalle() {
 
               <img 
                 id="imagen" 
-                src={`/${producto.imagen.replace("assets/img/", "")}`} 
-                alt={producto.alt} />
+                src={producto.imagen ? `/${producto.imagen.replace("assets/img/", "")}` : "/logo-sin-texto.png"} 
+                alt={producto.alt} 
+              />
               <div id="producto__container">
               <span id="etiqueta">{producto.etiqueta}</span>
               

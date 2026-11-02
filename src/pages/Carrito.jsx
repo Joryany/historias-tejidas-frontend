@@ -185,7 +185,11 @@ function Carrito() {
               {carrito.map((item, index) => (
                 <div key={index} className="item-carrito">
                   
-                  <img src={`/${item.imagen.replace("assets/img/", "")}`} alt={item.alt} className="item-carrito-imagen" />
+                  <img 
+                    src={item.imagen ? `/${item.imagen.replace("assets/img/", "")}` : "/logo-sin-texto.png"} 
+                    alt={item.alt || "Producto"} 
+                    className="item-carrito-imagen" 
+                  />
                   
                   <div className="item-carrito-detalles">
                     <h3>{item.nombre}</h3>
