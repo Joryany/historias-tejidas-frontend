@@ -7,7 +7,6 @@
     padding: var(--padding-seccion);
     border-radius: var(--radio);
     display: grid;
-    /* Columnas de ancho acotado y centradas: evita tarjetas pegadas a la izquierda con huecos a la derecha */
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 260px));
     justify-content: center;
     gap: var(--espacio-md);
@@ -28,6 +27,15 @@
     width: 100%;
     max-width: 300px;
     margin-inline: auto;
+}
+
+.tarjeta {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tarjeta:hover {
+  transform: translateY(-10px) scale(1.02); /* Se levanta y crece un 2% */
+  box-shadow: 0 15px 30px rgba(189, 75, 119, 0.3); /* Sombra rosada más grande */
 }
 
 .tarjeta img {

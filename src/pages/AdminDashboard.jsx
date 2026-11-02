@@ -64,6 +64,15 @@ function AdminDashboard() {
   const personalizadosPendientes = personalizados.filter(p => p.estado === "pendiente");
   const personalizadosProcesados = personalizados.filter(p => p.estado !== "pendiente");
 
+    const historialCombinado = [...pedidosProcesados, ...personalizadosProcesados];
+  
+  const historialOrdenado = historialCombinado.sort((a, b) => {
+   
+    const pesoA = a.estado === "aprobado" ? 1 : 2;
+    const pesoB = b.estado === "aprobado" ? 1 : 2;
+    return pesoA - pesoB; 
+  });
+
   const totalHistorial = pedidosProcesados.length + personalizadosProcesados.length;
 
   return (
@@ -189,7 +198,7 @@ function AdminDashboard() {
                 </thead>
                 <tbody>
                 
-                  {[...pedidosProcesados, ...personalizadosProcesados].map((pedido) => {
+                 {[...historialOrdenado].map((pedido) => {
                     const esPedido = pedido.productos ? true : false;
                     return (
                       <tr key={pedido._id}>

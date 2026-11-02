@@ -414,10 +414,6 @@
 
 /*==================================================
 =            RESPONSIVE DETALLE DE PRODUCTO        =
-= Bloques unificados por breakpoint (antes había   =
-= tres @media 768 y tres 480/360 repetidos).       =
-= Selectores disjuntos entre grupos: la cascada    =
-= no cambia.                                       =
 ==================================================*/
 
 /* ===== TABLET ===== */
