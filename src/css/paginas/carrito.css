@@ -201,6 +201,16 @@
     background-color: var(--rosa-palido);
 }
 
+.tabla-admin td span.texto-pequeno {
+    background-color: transparent !important;
+    color: var(--rosa-oscuro) !important;
+    padding: 0 !important;
+    border: none !important;
+    display: block;
+    margin-top: 4px;
+    font-size: 0.85rem;
+}
+
 
 /*==================================================
 =                RESPONSIVE CARRITO                =

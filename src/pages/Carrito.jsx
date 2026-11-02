@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link, NavLink } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import '../style.css';
 import '../css/paginas/carrito.css';
 import Calendario from "../components/Calendario";
+import Toast from '../components/Toast';
 
 function Carrito() {
-
   const [carrito, setCarrito] = useState(() => {
     const guardado = localStorage.getItem("carritoHT");
     return guardado ? JSON.parse(guardado) : [];
@@ -13,11 +13,16 @@ function Carrito() {
 
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [enviado, setEnviado] = useState(false);
+  
   const [nombre, setNombre] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
-  const [errorWhatsapp, setErrorWhatsapp] = useState(""); // <--- ¡AQUÍ ESTABA EL ERROR (FALTABA DECLARAR ESTE ESTADO)!
+  const [errorWhatsapp, setErrorWhatsapp] = useState(""); 
   const [fecha, setFecha] = useState("");
   const [lugar, setLugar] = useState("");
+
+  // Estados para el Toast
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMensaje, setToastMensaje] = useState("");
 
   const actualizarCarrito = (nuevoCarrito) => {
     setCarrito(nuevoCarrito);
@@ -50,7 +55,7 @@ function Carrito() {
 
     const datosPedido = {
       nombre,
-      whatsapp,
+      whatsapp: `+57${whatsapp}`, // Agregamos el +57 para que el admin lo use en WhatsApp
       fecha,
       lugar,
       productos: carrito,
@@ -67,16 +72,33 @@ function Carrito() {
           setEnviado(true);
           localStorage.removeItem("carritoHT");
           setCarrito([]);
+          
+          // Mostrar Toast de éxito
+          setToastMensaje("¡Pedido enviado con éxito!");
+          setToastVisible(true);
+          setTimeout(() => setToastVisible(false), 4000);
+
         } else {
-          alert("Hubo un error al enviar el pedido.");
+          // Mostrar Toast de error
+          setToastMensaje("Hubo un error al enviar el pedido. Intenta de nuevo.");
+          setToastVisible(true);
+          setTimeout(() => setToastVisible(false), 4000);
         }
       })
-      .catch((error) => console.error("Error:", error));
+      .catch((error) => {
+        console.error("Error:", error);
+        setToastMensaje("Error de conexión. Revisa tu internet.");
+        setToastVisible(true);
+        setTimeout(() => setToastVisible(false), 4000);
+      });
   };
 
   return (
     <div>
-     <header>
+      {/* Toast Flotante */}
+      <Toast mensaje={toastMensaje} tipo={toastVisible ? "exito" : "error"} visible={toastVisible} />
+
+      <header>
         <img src="/logo-sin-texto.png" alt="Logo" />
         <nav className='navegador_principal'>
           <NavLink to="/" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Inicio</NavLink>
@@ -129,7 +151,6 @@ function Carrito() {
             <label>Fecha deseada de entrega:</label>
             <Calendario fecha={fecha} setFecha={setFecha} />
 
-            <label>Lugar de entrega:</label>
             <label>Dirección de entrega:</label>
             <input 
               type="text" 
@@ -139,13 +160,11 @@ function Carrito() {
               required 
             />
 
-
             {lugar.length > 5 && !lugar.toLowerCase().includes("colombia") && !lugar.toLowerCase().includes("barranquilla") && !lugar.toLowerCase().includes("atlantico") && (
               <span className="error-mensaje">
                 Por el momento solo realizamos entregas en Colombia (Barranquilla). <br/> ⚠️ Agrega tu ciudad/país a la dirección.
               </span>
             )}
-
 
             {lugar.length > 5 && (lugar.toLowerCase().includes("colombia") || lugar.toLowerCase().includes("barranquilla") || lugar.toLowerCase().includes("atlantico")) && (
               <div className="contenedor-mapa">
@@ -225,14 +244,12 @@ function Carrito() {
 
       <footer>
         <div className="footer-container">
-
           <div className="footer-marca">
             <img src="/logo-sin-texto.png" alt="Logo de Historias Tejidas" />
             <h2>Historias Tejidas</h2>
           </div>
 
           <div className="cont-columna">
-
             <div className="footer-columna">
               <h3>Navegación</h3>
               <Link to="/">Inicio</Link>
@@ -251,7 +268,6 @@ function Carrito() {
               <Link to="/politica-privacidad">Política de privacidad</Link>
               <Link to="/terminos">Términos y condiciones</Link>
             </div>
-            
           </div>
         </div>
 

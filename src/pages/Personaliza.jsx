@@ -3,6 +3,7 @@ import { useParams, Link, NavLink } from 'react-router-dom';
 import '../style.css';
 import '../css/paginas/personaliza.css';
 import Calendario from "../components/Calendario";
+import Toast from '../components/Toast';
 
 function Personaliza() {
   const { idProducto } = useParams();   
@@ -23,6 +24,9 @@ function Personaliza() {
   const [enviado, setEnviado] = useState(false);
 
   const [errorWhatsapp, setErrorWhatsapp] = useState("");
+
+    const [toastVisible, setToastVisible] = useState(false);
+  const [toastMensaje, setToastMensaje] = useState("");
 
  
     const manejarEnvio = (e) => {
@@ -48,11 +52,22 @@ function Personaliza() {
       },
       body: JSON.stringify(datosPedido),
     })
-      .then((respuesta) => {
+            .then((respuesta) => {
         if (respuesta.ok) {
           setEnviado(true); 
+          
+          // Aquí activamos el Toast
+          setToastMensaje("¡Solicitud enviada con éxito! Te contactaremos pronto.");
+          setToastVisible(true);
+          
+          // Lo ocultamos a los 4 segundos
+          setTimeout(() => setToastVisible(false), 4000);
+          
         } else {
-          alert("Hubo un error al guardar tu solicitud.");
+          // Si hay error, mostramos un toast rojo
+          setToastMensaje("Hubo un error al enviar. Intenta de nuevo.");
+          setToastVisible(true);
+          setTimeout(() => setToastVisible(false), 4000);
         }
       })
       .catch((error) => console.error("Error al enviar:", error));
@@ -73,6 +88,10 @@ function Personaliza() {
 
   return (
     <div>
+
+      <Toast mensaje={toastMensaje} tipo={toastVisible ? "exito" : "error"} visible={toastVisible} />
+
+  
       <header>
         <img src="/logo-sin-texto.png" alt="Logo" />
         <nav className='navegador_principal'>
