@@ -26,6 +26,8 @@ function Chatbot() {
           </div>
 
           <div className="chatbot-mensajes">
+
+            <div className="chat-transicion">
             
             {/* ================= INICIO ================= */}
             {pantalla === "inicio" && (

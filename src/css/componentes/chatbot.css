@@ -201,45 +201,77 @@
 }
 
 
-/* 1. Animación del botón flotante */
-@keyframes latidoMimi {
-  0% { box-shadow: 0 0 0 0 rgba(189, 75, 119, 0.7); }
-  70% { box-shadow: 0 0 0 15px rgba(189, 75, 119, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(189, 75, 119, 0); }
+@keyframes rebotarMimi {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-15px); }
+  60% { transform: translateY(-7px); }
 }
 
 .chatbot-btn-flotante {
-  animation: latidoMimi 2s infinite; 
+  animation: rebotarMimi 3s infinite;
 }
 
-/* 2. Animación de apertura de la ventana */
-@keyframes subirVentana {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes abrirMimi {
+  0% { opacity: 0; transform: scale(0.5) translateY(50px); }
+  70% { transform: scale(1.05) translateY(-5px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .chatbot-ventana {
-  animation: subirVentana 0.3s ease-out forwards;
-}
+  animation: abrirMimi 0.4s ease-out forwards;
+} 
 
-/* 3. Animación de los mensajes y del avatar */
-@keyframes aparecerMensaje {
-  from { opacity: 0; transform: translateX(-10px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-.chat-mensaje.bot {
-  animation: aparecerMensaje 0.3s ease-out;
-}
-
-/* Salto de la foto de Mimí */
-@keyframes saltitoMimi {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+@keyframes respirarMimi {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
 }
 
 .mimi-foto {
-  animation: saltitoMimi 2s infinite ease-in-out;
+  animation: respirarMimi 2s infinite ease-in-out;
+}
+
+@keyframes caerMensaje {
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chat-mensaje.bot {
+  animation: caerMensaje 0.3s ease-out;
+}
+
+/* Hace que el contenedor del chat cambie de tamaño suavemente */
+.chatbot-ventana {
+  transition: height 0.3s ease, max-height 0.3s ease;
+}
+
+/* Hace que el contenido nuevo entre deslizándose */
+.chat-transicion {
+  animation: entradaSuaveChat 0.4s ease-out forwards;
+}
+
+@keyframes entradaSuaveChat {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Animación opcional para que los botones aparezcan uno tras otro */
+.chat-btn {
+  animation: aparecerBoton 0.3s ease-out forwards;
+  opacity: 0; /* Empiezan invisibles */
+}
+
+/* Retraso para que parezca que caen en cascada */
+.chat-btn:nth-child(1) { animation-delay: 0.05s; }
+.chat-btn:nth-child(2) { animation-delay: 0.1s; }
+.chat-btn:nth-child(3) { animation-delay: 0.15s; }
+.chat-btn:nth-child(4) { animation-delay: 0.2s; }
+.chat-btn:nth-child(5) { animation-delay: 0.25s; }
+.chat-btn:nth-child(6) { animation-delay: 0.3s; }
+
+@keyframes aparecerBoton {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 /* ==================================================
    RESPONSIVE CHATBOT
