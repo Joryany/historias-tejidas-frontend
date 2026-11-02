@@ -11,15 +11,13 @@ function AdminDashboard() {
 
   const navigate = useNavigate();
 
-  // 1. Verificar que el admin esté logueado y cargar datos
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
     if (!token) {
-      navigate('/admin'); // Si no hay token, fuera
+      navigate('/admin'); 
       return;
     }
 
-    // Traemos los pedidos y personalizados
     Promise.all([
       fetch(`${import.meta.env.VITE_API_URL}/pedidos`).then(r => r.json()),
       fetch(`${import.meta.env.VITE_API_URL}/personalizados`).then(r => r.json())
@@ -33,7 +31,6 @@ function AdminDashboard() {
     });
   }, [navigate]);
 
-  // 2. Función para cambiar estado
   const cambiarEstado = (id, nuevoEstado, tipo) => {
     const ruta = tipo === "pedido" ? "pedidos" : "personalizados";
     
@@ -43,7 +40,6 @@ function AdminDashboard() {
       body: JSON.stringify({ estado: nuevoEstado })
     }).then(res => {
       if (res.ok) {
-        // Actualizamos la vista sin recargar
         if (tipo === "pedido") {
           setPedidos(pedidos.map(p => p._id === id ? { ...p, estado: nuevoEstado } : p));
         } else {
@@ -58,15 +54,15 @@ function AdminDashboard() {
     navigate('/admin');
   };
 
-  if (cargando) return <h2 style={{ textAlign: "center", marginTop: "50px" }}>Cargando base de datos...</h2>;
+  if (cargando) return <h2 className="admin-cargando">Cargando base de datos...</h2>;
 
   return (
     <div className="admin-dashboard">
       <header className="admin-header">
         <h1>Dashboard - Historias Tejidas</h1>
-        <div>
-          <Link to="/" className="button" style={{ marginRight: "10px" }}>Ir a la Tienda</Link>
-          <button onClick={cerrarSesion} className="btn-pestana" style={{ background: "white", color: "var(--rosa-principal)" }}>Cerrar Sesión</button>
+        <div className="admin-header-botones">
+          <Link to="/" className="button btn-admin-header">Ir a la Tienda</Link>
+          <button onClick={cerrarSesion} className="button btn-admin-header">Cerrar Sesión</button>
         </div>
       </header>
 
@@ -87,8 +83,7 @@ function AdminDashboard() {
               <thead>
                 <tr>
                   <th>Cliente</th>
-                  <th>WhatsApp</th>
-                  <th>Dirección</th>
+                  <th>Contacto</th>
                   <th>Productos</th>
                   <th>Total</th>
                   <th>Estado</th>
@@ -98,12 +93,14 @@ function AdminDashboard() {
               <tbody>
                 {pedidos.map((pedido) => (
                   <tr key={pedido._id}>
-                    <td>{pedido.nombre}</td>
+                    <td>
+                      <strong>{pedido.nombre}</strong><br/>
+                      <span className="texto-pequeno">{pedido.lugar}</span>
+                    </td>
                     <td>{pedido.whatsapp}</td>
-                    <td>{pedido.lugar}</td>
                     <td>
                       {pedido.productos.map((prod, i) => (
-                        <div key={i} style={{ fontSize: "0.85rem", marginBottom: "5px" }}>
+                        <div key={i} className="lista-productos-admin">
                           • {prod.cantidad}x {prod.nombre}
                           {prod.selecciones && Object.values(prod.selecciones).length > 0 && 
                             ` (${Object.values(prod.selecciones).map(s => s.nombre).join(", ")})`
@@ -113,19 +110,21 @@ function AdminDashboard() {
                     </td>
                     <td>${pedido.total.toLocaleString("es-CO")}</td>
                     <td>
-                      <span style={{ color: pedido.estado === "pendiente" ? "orange" : (pedido.estado === "aprobado" ? "green" : "red"), fontWeight: "bold" }}>
-                        {pedido.estado.toUpperCase()}
+                      <span className={`estado-badge ${pedido.estado}`}>
+                        {pedido.estado}
                       </span>
                     </td>
                     <td>
-                      {pedido.estado === "pendiente" ? (
-                        <>
-                          <button onClick={() => cambiarEstado(pedido._id, "aprobado", "pedido")} className="btn-whatsapp" style={{ marginRight: "5px" }}>Aprobar</button>
-                          <button onClick={() => cambiarEstado(pedido._id, "rechazado", "pedido")} className="btn-quitar-favorito">Rechazar</button>
-                        </>
-                      ) : (
-                        <a href={`https://wa.me/${pedido.whatsapp.replace("+", "")}?text=Hola ${pedido.nombre}, tu pedido en Historias Tejidas ha sido ${pedido.estado}.`} target="_blank" rel="noreferrer" className="btn-whatsapp">WhatsApp</a>
-                      )}
+                      <div className="acciones-tabla">
+                        {pedido.estado === "pendiente" ? (
+                          <>
+                            <button onClick={() => cambiarEstado(pedido._id, "aprobado", "pedido")} className="btn-admin aprobar">Aprobar</button>
+                            <button onClick={() => cambiarEstado(pedido._id, "rechazado", "pedido")} className="btn-admin rechazar">Rechazar</button>
+                          </>
+                        ) : (
+                          <a href={`https://wa.me/${pedido.whatsapp.replace("+", "")}?text=Hola ${pedido.nombre}, tu pedido en Historias Tejidas ha sido ${pedido.estado}.`} target="_blank" rel="noreferrer" className="btn-admin whatsapp">WhatsApp</a>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -141,6 +140,7 @@ function AdminDashboard() {
               <thead>
                 <tr>
                   <th>Cliente</th>
+                  <th>Contacto</th>
                   <th>Descripción</th>
                   <th>Estado</th>
                   <th>Acciones</th>
@@ -149,22 +149,28 @@ function AdminDashboard() {
               <tbody>
                 {personalizados.map((pedido) => (
                   <tr key={pedido._id}>
-                    <td>{pedido.nombre}</td>
+                    <td>
+                      <strong>{pedido.nombre}</strong><br/>
+                      <span className="texto-pequeno">{pedido.lugar}</span>
+                    </td>
+                    <td>{pedido.whatsapp}</td>
                     <td>{pedido.descripcion}</td>
                     <td>
-                      <span style={{ color: pedido.estado === "pendiente" ? "red" : (pedido.estado === "aprobado" ? "" :white "red"), fontWeight: "bold" }}>
-                        {pedido.estado.toUpperCase()}
+                      <span className={`estado-badge ${pedido.estado}`}>
+                        {pedido.estado}
                       </span>
                     </td>
                     <td>
-                      {pedido.estado === "pendiente" ? (
-                        <>
-                          <button onClick={() => cambiarEstado(pedido._id, "aprobado", "personalizado")} className="btn-whatsapp" style={{ marginRight: "5px" }}>Aprobar</button>
-                          <button onClick={() => cambiarEstado(pedido._id, "rechazado", "personalizado")} className="btn-quitar-favorito">Rechazar</button>
-                        </>
-                      ) : (
-                        <a href={`https://wa.me/${pedido.whatsapp.replace("+", "")}?text=Hola ${pedido.nombre}, hablemos de tu diseño personalizado.`} target="_blank" rel="noreferrer" className="btn-whatsapp">WhatsApp</a>
-                      )}
+                      <div className="acciones-tabla">
+                        {pedido.estado === "pendiente" ? (
+                          <>
+                            <button onClick={() => cambiarEstado(pedido._id, "aprobado", "personalizado")} className="btn-admin aprobar">Aprobar</button>
+                            <button onClick={() => cambiarEstado(pedido._id, "rechazado", "personalizado")} className="btn-admin rechazar">Rechazar</button>
+                          </>
+                        ) : (
+                          <a href={`https://wa.me/${pedido.whatsapp.replace("+", "")}?text=Hola ${pedido.nombre}, hablemos de tu diseño personalizado.`} target="_blank" rel="noreferrer" className="btn-admin whatsapp">WhatsApp</a>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
