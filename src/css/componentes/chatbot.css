@@ -200,6 +200,47 @@
     outline-offset: 3px;
 }
 
+
+/* 1. Animación del botón flotante */
+@keyframes latidoMimi {
+  0% { box-shadow: 0 0 0 0 rgba(189, 75, 119, 0.7); }
+  70% { box-shadow: 0 0 0 15px rgba(189, 75, 119, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(189, 75, 119, 0); }
+}
+
+.chatbot-btn-flotante {
+  animation: latidoMimi 2s infinite; 
+}
+
+/* 2. Animación de apertura de la ventana */
+@keyframes subirVentana {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chatbot-ventana {
+  animation: subirVentana 0.3s ease-out forwards;
+}
+
+/* 3. Animación de los mensajes y del avatar */
+@keyframes aparecerMensaje {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.chat-mensaje.bot {
+  animation: aparecerMensaje 0.3s ease-out;
+}
+
+/* Salto de la foto de Mimí */
+@keyframes saltitoMimi {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.mimi-foto {
+  animation: saltitoMimi 2s infinite ease-in-out;
+}
 /* ==================================================
    RESPONSIVE CHATBOT
 ================================================== */
