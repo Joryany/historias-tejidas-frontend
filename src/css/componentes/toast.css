@@ -12,7 +12,7 @@
 }
 
 .toast-contenedor.exito {
-  background-color: #25D366; /* Verde */
+  background-color: var(--frambuesa);
 }
 
 .toast-contenedor.error {
