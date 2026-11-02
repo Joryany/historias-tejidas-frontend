@@ -82,7 +82,11 @@ function AdminDashboard() {
         <h1>Dashboard - Historias Tejidas</h1>
         <div className="admin-header-botones">
           <Link to="/" className="button btn-admin-header">Ir a la Tienda</Link>
+          <Link to="/admin/calculadora" className="button btn-admin-header" style={{ backgroundColor: "var(--frambuesa)", color: "white" }}>
+          Abrir Calculadora
+        </Link>
           <button onClick={cerrarSesion} className="button btn-admin-header">Cerrar Sesión</button>
+
         </div>
       </header>
 

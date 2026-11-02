@@ -10,6 +10,7 @@ import Favoritos from './pages/Favoritos';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import Chatbot from './components/Chatbot';
+import CalculadoraPrecios from './pages/CalculadoraPrecios';
 
 function App() {
 
@@ -48,7 +49,8 @@ function App() {
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/panel" element={<AdminDashboard />} />
 
-
+        <Route path="/admin/calculadora" element={<CalculadoraPrecios />} />
+        
       </Routes>
 
       <Chatbot />
