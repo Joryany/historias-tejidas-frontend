@@ -122,7 +122,7 @@ function AdminDashboard() {
                             <button onClick={() => cambiarEstado(pedido._id, "rechazado", "pedido")} className="btn-admin rechazar">Rechazar</button>
                           </>
                         ) : (
-                          <a href={`https://wa.me/${pedido.whatsapp.replace("+", "")}?text=Hola ${pedido.nombre}, tu pedido en Historias Tejidas ha sido ${pedido.estado}.`} target="_blank" rel="noreferrer" className="btn-admin whatsapp">WhatsApp</a>
+                          <a href={`https://wa.me/${pedido.whatsapp.replace("+", "")}?text==Buenos días, ${pedido.nombre},un gusto en conocerle. Soy Joryany Hormiga, de *Historias tejidas*; estoy aquí para decirle que su pedido fue: *${pedido.estado}*.`} target="_blank" rel="noreferrer" className="btn-admin whatsapp">WhatsApp</a>
                         )}
                       </div>
                     </td>
@@ -168,7 +168,7 @@ function AdminDashboard() {
                             <button onClick={() => cambiarEstado(pedido._id, "rechazado", "personalizado")} className="btn-admin rechazar">Rechazar</button>
                           </>
                         ) : (
-                          <a href={`https://wa.me/${pedido.whatsapp.replace("+", "")}?text=Hola ${pedido.nombre}, hablemos de tu diseño personalizado.`} target="_blank" rel="noreferrer" className="btn-admin whatsapp">WhatsApp</a>
+                          <a href={`https://wa.me/${pedido.whatsapp.replace("+", "")}?text=Buenos días, ${pedido.nombre},un gusto en conocerle. Soy Joryany Hormiga, de *Historias tejidas*; estoy aquí para terminar de concretar su *pedido personalizado*.`} target="_blank" rel="noreferrer" className="btn-admin whatsapp">WhatsApp</a>
                         )}
                       </div>
                     </td>
