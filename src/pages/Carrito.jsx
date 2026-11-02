@@ -14,13 +14,23 @@ function Carrito() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [enviado, setEnviado] = useState(false);
   
-  const [nombre, setNombre] = useState("");
-  const [whatsapp, setWhatsapp] = useState("");
+  // AQUÍ ESTÁ LA MAGIA DEL AUTOCOMPLETADO:
+  const [nombre, setNombre] = useState(() => {
+    const cliente = JSON.parse(localStorage.getItem("clienteHT"));
+    return cliente?.nombre || "";
+  });
+  const [whatsapp, setWhatsapp] = useState(() => {
+    const cliente = JSON.parse(localStorage.getItem("clienteHT"));
+    return cliente?.whatsapp || "";
+  });
+  const [lugar, setLugar] = useState(() => {
+    const cliente = JSON.parse(localStorage.getItem("clienteHT"));
+    return cliente?.lugar || "";
+  });
+
   const [errorWhatsapp, setErrorWhatsapp] = useState(""); 
   const [fecha, setFecha] = useState("");
-  const [lugar, setLugar] = useState("");
 
-  // Estados para el Toast
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMensaje, setToastMensaje] = useState("");
 
@@ -55,7 +65,7 @@ function Carrito() {
 
     const datosPedido = {
       nombre,
-      whatsapp: `+57${whatsapp}`, // Agregamos el +57 para que el admin lo use en WhatsApp
+      whatsapp: `+57${whatsapp}`,
       fecha,
       lugar,
       productos: carrito,
@@ -69,17 +79,18 @@ function Carrito() {
     })
       .then((respuesta) => {
         if (respuesta.ok) {
+          // GUARDAMOS LOS DATOS DEL CLIENTE PARA LA PRÓXIMA VEZ
+          localStorage.setItem("clienteHT", JSON.stringify({ nombre, whatsapp, lugar }));
+
           setEnviado(true);
           localStorage.removeItem("carritoHT");
           setCarrito([]);
           
-          // Mostrar Toast de éxito
           setToastMensaje("¡Pedido enviado con éxito!");
           setToastVisible(true);
           setTimeout(() => setToastVisible(false), 4000);
 
         } else {
-          // Mostrar Toast de error
           setToastMensaje("Hubo un error al enviar el pedido. Intenta de nuevo.");
           setToastVisible(true);
           setTimeout(() => setToastVisible(false), 4000);
@@ -95,7 +106,6 @@ function Carrito() {
 
   return (
     <div>
-      {/* Toast Flotante */}
       <Toast mensaje={toastMensaje} tipo={toastVisible ? "exito" : "error"} visible={toastVisible} />
 
       <header>
@@ -118,7 +128,6 @@ function Carrito() {
           </div>
         ) : 
         
-        /* 2. FORMULARIO DE DATOS */
         mostrarFormulario ? (
           <form onSubmit={procesarPedido} className="checkout-form">
             <h2>Datos de contacto</h2>
@@ -186,7 +195,6 @@ function Carrito() {
           </form>
         ) :
 
-        /* 3. CARRITO VACÍO */
         carrito.length === 0 ? (
           <div className="carrito-vacio">
             <h2>Aún te faltan Historias por Contar...</h2>
@@ -197,7 +205,6 @@ function Carrito() {
           </div>
         ) : 
         
-        /* 4. CARRITO CON PRODUCTOS */
         (
           <div>
             <div className="lista-carrito">

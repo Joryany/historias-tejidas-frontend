@@ -153,6 +153,7 @@ function Chatbot() {
 
           </div>
         </div>
+      </div>
       )}
     </div>
   );

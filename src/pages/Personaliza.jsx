@@ -10,10 +10,21 @@ function Personaliza() {
   const [nombreProducto, setNombreProducto] = useState("");
   const [imagenProducto, setImagenProducto] = useState("");
 
-  const [nombre, setNombre] = useState("");
-  const [whatsapp, setWhatsapp] = useState("");
+  // AQUÍ ESTÁ LA MAGIA DEL AUTOCOMPLETADO:
+  const [nombre, setNombre] = useState(() => {
+    const cliente = JSON.parse(localStorage.getItem("clienteHT"));
+    return cliente?.nombre || "";
+  });
+  const [whatsapp, setWhatsapp] = useState(() => {
+    const cliente = JSON.parse(localStorage.getItem("clienteHT"));
+    return cliente?.whatsapp || "";
+  });
+  const [lugar, setLugar] = useState(() => {
+    const cliente = JSON.parse(localStorage.getItem("clienteHT"));
+    return cliente?.lugar || "";
+  });
+
   const [fecha, setFecha] = useState("");
-  const [lugar, setLugar] = useState("");
   const [descripcion, setDescripcion] = useState("");
   
   const [queEs, setQueEs] = useState("");
@@ -22,20 +33,18 @@ function Personaliza() {
   const [accesorios, setAccesorios] = useState("");
 
   const [enviado, setEnviado] = useState(false);
-
   const [errorWhatsapp, setErrorWhatsapp] = useState("");
 
-    const [toastVisible, setToastVisible] = useState(false);
+  const [toastVisible, setToastVisible] = useState(false);
   const [toastMensaje, setToastMensaje] = useState("");
 
- 
-    const manejarEnvio = (e) => {
+  const manejarEnvio = (e) => {
     e.preventDefault();
 
     const datosPedido = {
       productoId: idProducto || null, 
       nombre: nombre,
-      whatsapp: `+57${whatsapp}`, // Recuerda el +57
+      whatsapp: `+57${whatsapp}`, 
       fecha: fecha,
       lugar: lugar,
       descripcion: descripcion,
@@ -52,28 +61,32 @@ function Personaliza() {
       },
       body: JSON.stringify(datosPedido),
     })
-            .then((respuesta) => {
+      .then((respuesta) => {
         if (respuesta.ok) {
+          // GUARDAMOS LOS DATOS DEL CLIENTE PARA LA PRÓXIMA VEZ
+          localStorage.setItem("clienteHT", JSON.stringify({ nombre, whatsapp, lugar }));
+
           setEnviado(true); 
           
-          // Aquí activamos el Toast
           setToastMensaje("¡Solicitud enviada con éxito! Te contactaremos pronto.");
           setToastVisible(true);
-          
-          // Lo ocultamos a los 4 segundos
           setTimeout(() => setToastVisible(false), 4000);
           
         } else {
-          // Si hay error, mostramos un toast rojo
           setToastMensaje("Hubo un error al enviar. Intenta de nuevo.");
           setToastVisible(true);
           setTimeout(() => setToastVisible(false), 4000);
         }
       })
-      .catch((error) => console.error("Error al enviar:", error));
+      .catch((error) => {
+        console.error("Error al enviar:", error);
+        setToastMensaje("Error de conexión. Revisa tu internet.");
+        setToastVisible(true);
+        setTimeout(() => setToastVisible(false), 4000);
+      });
   };
 
-    useEffect(() => {
+  useEffect(() => {
     if (idProducto) {
       fetch(`${import.meta.env.VITE_API_URL}/productos/${idProducto}`)
         .then((respuesta) => respuesta.json())
@@ -85,13 +98,10 @@ function Personaliza() {
     }
   }, [idProducto]);
 
-
   return (
     <div>
-
       <Toast mensaje={toastMensaje} tipo={toastVisible ? "exito" : "error"} visible={toastVisible} />
 
-  
       <header>
         <img src="/logo-sin-texto.png" alt="Logo" />
         <nav className='navegador_principal'>
@@ -100,7 +110,6 @@ function Personaliza() {
           <NavLink to="/personaliza" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Personaliza</NavLink>
           <NavLink to="/carrito" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Carrito</NavLink>
           <NavLink to="/favoritos" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>♥</NavLink>
-        
         </nav>
       </header>
 
@@ -114,29 +123,27 @@ function Personaliza() {
             <p>Estás modificando a: "{nombreProducto}"</p>
           )}
           
-         {idProducto && (
+          {idProducto && (
             <img 
               src={`/${imagenProducto.replace("assets/img/", "")}`} 
               alt={nombreProducto} 
-          />
+            />
           )}
         </section>
-        
 
         {enviado ? (
-          <div>
+          <div className="exito-mensaje">
             <h3>¡Solicitud enviada con éxito!</h3>
             <p>Nos pondremos en contacto contigo por WhatsApp pronto.</p>
-            <Link to="/catalogo">Volver al catálogo</Link>
+            <Link to="/catalogo" className="button">Volver al catálogo</Link>
           </div>
         ) : (
-          <form onSubmit={manejarEnvio}>
+          <form onSubmit={manejarEnvio} className="form-personaliza">
             
             <label>Nombre completo:</label>
             <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
 
-           <label>WhatsApp:</label>
-
+            <label>WhatsApp:</label>
             <div className="input-con-prefijo">
               <span className="prefijo">+57</span>
               <input 
@@ -157,7 +164,7 @@ function Personaliza() {
             </div>
             {errorWhatsapp && <span className="error-mensaje">{errorWhatsapp}</span>}
 
-           <label>Fecha de entrega deseada:</label>
+            <label>Fecha de entrega deseada:</label>
             <Calendario fecha={fecha} setFecha={setFecha} />
 
             <label>Dirección de entrega:</label>
@@ -169,13 +176,11 @@ function Personaliza() {
               required 
             />
 
-
             {lugar.length > 5 && !lugar.toLowerCase().includes("colombia") && !lugar.toLowerCase().includes("barranquilla") && !lugar.toLowerCase().includes("atlantico") && (
               <span className="error-mensaje">
                 Por el momento solo realizamos entregas en Colombia (Barranquilla). <br/> ⚠️ Agrega tu ciudad/país a la dirección.
               </span>
             )}
-
 
             {lugar.length > 5 && (lugar.toLowerCase().includes("colombia") || lugar.toLowerCase().includes("barranquilla") || lugar.toLowerCase().includes("atlantico")) && (
               <div className="contenedor-mapa">
@@ -196,21 +201,21 @@ function Personaliza() {
                 <input type="text" value={queEs} onChange={(e) => setQueEs(e.target.value)} required />
 
                 <label>Material preferido:</label>
-                  <select value={material} onChange={(e) => setMaterial(e.target.value)} required>
-                    <option value="">Selecciona un material...</option>
-                    <option value="algodon">Algodón 100%</option>
-                    <option value="coral">Hilo Coral (Acrílico)</option>
-                    <option value="poliester">Poliéster</option>
-                    <option value="bebes">Hilo para bebés (Hipoalergénico)</option>
-                  </select>
+                <select value={material} onChange={(e) => setMaterial(e.target.value)} required>
+                  <option value="">Selecciona un material...</option>
+                  <option value="algodon">Algodón 100%</option>
+                  <option value="coral">Hilo Coral (Acrílico)</option>
+                  <option value="poliester">Poliéster</option>
+                  <option value="bebes">Hilo para bebés (Hipoalergénico)</option>
+                </select>
 
                 <label>Tamaño estimado:</label>
-                  <select value={tamano} onChange={(e) => setTamano(e.target.value)} required>
-                    <option value="">Selecciona un tamaño...</option>
-                    <option value="pequeno">Pequeño (8 - 10 cm)</option>
-                    <option value="mediano">Mediano (15 - 20 cm)</option>
-                    <option value="grande">Grande (30 cm o más)</option>
-                  </select>
+                <select value={tamano} onChange={(e) => setTamano(e.target.value)} required>
+                  <option value="">Selecciona un tamaño...</option>
+                  <option value="pequeno">Pequeño (8 - 10 cm)</option>
+                  <option value="mediano">Mediano (15 - 20 cm)</option>
+                  <option value="grande">Grande (30 cm o más)</option>
+                </select>
 
                 <label>Accesorios extra:</label>
                 <input type="text" value={accesorios} onChange={(e) => setAccesorios(e.target.value)} />
@@ -226,16 +231,15 @@ function Personaliza() {
           </form>
         )}
       </main>
-         <footer>
-        <div className="footer-container">
 
+      <footer>
+        <div className="footer-container">
           <div className="footer-marca">
             <img src="/logo-sin-texto.png" alt="Logo de Historias Tejidas" />
             <h2>Historias Tejidas</h2>
           </div>
 
           <div className="cont-columna">
-
             <div className="footer-columna">
               <h3>Navegación</h3>
               <Link to="/">Inicio</Link>
@@ -254,7 +258,6 @@ function Personaliza() {
               <Link to="/politica-privacidad">Política de privacidad</Link>
               <Link to="/terminos">Términos y condiciones</Link>
             </div>
-            
           </div>
         </div>
 

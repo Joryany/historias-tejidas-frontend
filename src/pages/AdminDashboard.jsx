@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../style.css';
 import '../css/paginas/admin.css';
+import AdminProductos from '../components/AdminProductos';
 
 function AdminDashboard() {
   // 1. Ahora tenemos 3 pestañas: pedidos, personalizados e historial
@@ -97,6 +98,9 @@ function AdminDashboard() {
           </button>
           <button className={pestana === "historial" ? "btn-pestana activo" : "btn-pestana"} onClick={() => setPestana("historial")}>
             Historial de Pedidos ({totalHistorial})
+          </button>
+          <button className={pestana === "productos" ? "btn-pestana activo" : "btn-pestana"} onClick={() => setPestana("productos")}>
+            Gestionar Productos
           </button>
         </div>
 
@@ -234,6 +238,7 @@ function AdminDashboard() {
             )}
           </div>
         )}
+        {pestana === "productos" && <AdminProductos />}
       </main>
     </div>
   );

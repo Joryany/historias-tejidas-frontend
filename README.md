@@ -1,16 +1,25 @@
-# React + Vite
+# 🧶 Historias Tejidas - E-commerce
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Tienda virtual de amigurumis y tejidos personalizados. Proyecto final de desarrollo web.
 
-Currently, two official plugins are available:
+## 🚀 Tecnologías utilizadas
+- **Frontend:** React, Vite, React Router, CSS3.
+- **Backend:** Node.js, Express, MongoDB Atlas (Mongoose).
+- **Despliegue:** Netlify (Frontend) y Render (Backend).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Características principales
+- Catálogo dinámico con filtros, búsqueda y paginación.
+- Página de detalle con modal de compra y opciones personalizadas.
+- Formulario de personalización con validaciones de WhatsApp y mapas.
+- Carrito de compras persistente.
+- Panel de administración protegido (login) con gestión de pedidos y envío de mensajes automáticos por WhatsApp.
+- Chatbot interactivo "Mimí" con IA basada en reglas para guiar a los clientes.
 
-## React Compiler
+## 🛠️ Instalación local
+1. Clonar el repositorio.
+2. Ejecutar `npm install`.
+3. Crear un archivo `.env` con `VITE_API_URL=http://localhost:3000/api`.
+4. Ejecutar `npm run dev`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 👩‍💻 Autora
+Joryany Hormiga - Historias Tejidas.

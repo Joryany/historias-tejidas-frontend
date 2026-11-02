@@ -1,8 +1,20 @@
 import '../style.css';
 import '../css/paginas/inicio.css';
 import { Link, NavLink } from 'react-router-dom'; 
+import { useState } from 'react';
 
 function Inicio() {
+
+  const [modalNosotros, setModalNosotros] = useState(false);
+
+  
+const [modalCerrando, setModalCerrando] = useState(false);
+
+const cerrarModalNosotros = () => {
+  setModalCerrando(true);
+};
+
+
   return (
     <div>
       <header>
@@ -173,21 +185,19 @@ function Inicio() {
             </div>
             <div className="cont-link-des">
               <p>¿Qué estas esperando?</p>
-              <Link className="link-descuento" to="/carrito">Ver descuentos por primera compra-&gt;</Link>
             </div>
           </div>
         </section>
 
-        {/* <--abrir un modal--> en esta seccion de sobre nosotros */}
         <section className="sobre-nosotros">
           <div className="sobre-contenido">
             <span>Nuestra historia</span>
             <h2>¿Quienes Somos?</h2>
             <p>Historias Tejidas nació de una idea sencilla: convertir aquello que significa algo para nosotros en algo que podamos conservar.</p>
             <p>Cada creación combina tejido, imaginación y detalles pensados para que cada pieza tenga una historia propia.</p>
-            <div className="boton-wrapper">
-              <Link to="/sobre-nosotros" className="button">Conoce de nosotros</Link>
-            </div>
+            <button className="button" onClick={() => setModalNosotros(true)}>
+                Conoce de nosotros
+            </button>
           </div>
         </section>
 
@@ -234,6 +244,79 @@ function Inicio() {
           <p>© 2026 Historias Tejidas. Todos los derechos reservados.</p>
         </div>
       </footer>
+      
+
+      
+      {modalNosotros && (
+        <div
+          className={`modal-overlay activo ${
+            modalCerrando ? "modal-cerrando" : ""
+          }`}
+          onClick={cerrarModalNosotros}
+        >
+          <div
+            className="modal-cuadro sobre-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="titulo-nosotros"
+            onClick={(e) => e.stopPropagation()}
+            onAnimationEnd={(e) => {
+              if (
+                e.target === e.currentTarget &&
+                e.animationName === "modal-salida"
+              ) {
+                setModalNosotros(false);
+                setModalCerrando(false);
+              }
+            }}
+          >
+            <button
+              className="modal-cerrar"
+              onClick={cerrarModalNosotros}
+              aria-label="Cerrar ventana"
+            >
+              ✕
+            </button>
+
+            <h2 id="titulo-nosotros">Nuestra Historia</h2>
+
+            <div className="sobre-modal-contenido">
+
+              <img
+                src="/logo-sin-texto.png"
+                alt="Logo de Historias Tejidas"
+                className="sobre-logo"
+              />
+
+              <p className="sobre-introduccion">
+                En Historias Tejidas creemos que los pequeños
+                detalles pueden guardar grandes historias.
+              </p>
+
+              <p>
+                Nacimos del deseo de transformar ideas, recuerdos
+                y personas especiales en creaciones hechas a mano.
+                A través del tejido, damos vida a personajes,
+                mascotas y detalles que tienen un significado
+                único para quien los recibe.
+              </p>
+
+              <p>
+                Cada pieza es elaborada con dedicación,
+                imaginación y cuidado en cada detalle.
+                Nos encanta convertir tus ideas en amigurumis
+                únicos, hechos especialmente para ti.
+              </p>
+
+              <p className="sobre-despedida">
+                Gracias por permitirnos tejer tu historia.
+              </p>
+
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
