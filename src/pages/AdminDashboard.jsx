@@ -89,6 +89,7 @@ function AdminDashboard() {
                   <th>Cliente</th>
                   <th>WhatsApp</th>
                   <th>Dirección</th>
+                  <th>Productos</th>
                   <th>Total</th>
                   <th>Estado</th>
                   <th>Acciones</th>
@@ -100,6 +101,16 @@ function AdminDashboard() {
                     <td>{pedido.nombre}</td>
                     <td>{pedido.whatsapp}</td>
                     <td>{pedido.lugar}</td>
+                    <td>
+                      {pedido.productos.map((prod, i) => (
+                        <div key={i} style={{ fontSize: "0.85rem", marginBottom: "5px" }}>
+                          • {prod.cantidad}x {prod.nombre}
+                          {prod.selecciones && Object.values(prod.selecciones).length > 0 && 
+                            ` (${Object.values(prod.selecciones).map(s => s.nombre).join(", ")})`
+                          }
+                        </div>
+                      ))}
+                    </td>
                     <td>${pedido.total.toLocaleString("es-CO")}</td>
                     <td>
                       <span style={{ color: pedido.estado === "pendiente" ? "orange" : (pedido.estado === "aprobado" ? "green" : "red"), fontWeight: "bold" }}>
@@ -141,7 +152,7 @@ function AdminDashboard() {
                     <td>{pedido.nombre}</td>
                     <td>{pedido.descripcion}</td>
                     <td>
-                      <span style={{ color: pedido.estado === "pendiente" ? "orange" : (pedido.estado === "aprobado" ? "green" : "red"), fontWeight: "bold" }}>
+                      <span style={{ color: pedido.estado === "pendiente" ? "red" : (pedido.estado === "aprobado" ? "" :white "red"), fontWeight: "bold" }}>
                         {pedido.estado.toUpperCase()}
                       </span>
                     </td>

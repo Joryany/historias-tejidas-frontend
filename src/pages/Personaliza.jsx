@@ -25,11 +25,37 @@ function Personaliza() {
   const [errorWhatsapp, setErrorWhatsapp] = useState("");
 
  
-  const manejarEnvio = (e) => {
+    const manejarEnvio = (e) => {
     e.preventDefault();
-    
-    console.log("Formulario enviado:", { idProducto, nombre, whatsapp, fecha, lugar, descripcion });
-    setEnviado(true);
+
+    const datosPedido = {
+      productoId: idProducto || null, 
+      nombre: nombre,
+      whatsapp: `+57${whatsapp}`, // Recuerda el +57
+      fecha: fecha,
+      lugar: lugar,
+      descripcion: descripcion,
+      queEs: queEs,
+      material: material,
+      tamano: tamano,
+      accesorios: accesorios
+    };
+
+    fetch(`${import.meta.env.VITE_API_URL}/personalizados`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(datosPedido),
+    })
+      .then((respuesta) => {
+        if (respuesta.ok) {
+          setEnviado(true); 
+        } else {
+          alert("Hubo un error al guardar tu solicitud.");
+        }
+      })
+      .catch((error) => console.error("Error al enviar:", error));
   };
 
     useEffect(() => {
