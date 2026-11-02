@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import TarjetaProducto from '../components/TarjetaProducto';
-import '../style.css'
-import { Link, NavLink } from 'react-router-dom';
+import '../style.css';
+import '../css/paginas/catalogo.css';
+import { useSearchParams, Link, NavLink } from 'react-router-dom';
 
 function mezclarAleatoriamente(array) {
   return [...array].sort(() => Math.random() - 0.5);
@@ -9,32 +10,41 @@ function mezclarAleatoriamente(array) {
 
 function Catalogo() {
  const [cargando, setCargando] = useState(true); 
+  const [productos, setProductos] = useState([]);   
+  
 
- const [productos, setProductos] = useState([]);   
-
- const [categoriaActual, setCategoriaActual] = useState("todos");
-
- const [relacionados, setRelacionados] = useState([]);
-
- const [busqueda, setBusqueda] = useState("");
-
- const [orden, setOrden] = useState("defecto");
+  const [searchParams] = useSearchParams();
+  const categoriaURL = searchParams.get("categoria") || "todos";
 
  
-
- useEffect(() => {
+  const [categoriaActual, setCategoriaActual] = useState(categoriaURL);
   
-  fetch(`${import.meta.env.VITE_API_URL}/productos`)
-    .then((respuesta) => respuesta.json())
+  const [busqueda, setBusqueda] = useState("");
+  const [orden, setOrden] = useState("defecto");
+  const [paginaActual, setPaginaActual] = useState(1);
+  const PRODUCTOS_POR_PAGINA = 9; 
+
+
+  useEffect(() => {
+    setCategoriaActual(categoriaURL);
+    setPaginaActual(1);
+  }, [categoriaURL]);
+
+   useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/productos`)
+      .then((respuesta) => respuesta.json())
       .then((datos) => {
-        setProductos(datos);  
+        const datosMezclados = mezclarAleatoriamente(datos);
+        setProductos(datosMezclados); 
         setCargando(false);    
- })
-  .catch((error) => {
-    console.error("Error al cargar los productos", error);
-    setCargando(false);
-    });
-  }, []); // ejecutalo al inicio
+      })
+      .catch((error) => {
+        console.error("Error al cargar los productos", error);
+        setCargando(false);
+      });
+  }, []);
+
+   
 
   if (cargando) {
     return <div className='mensaje_carga'> 
@@ -43,13 +53,9 @@ function Catalogo() {
     </div>
   }
 
-  let productosAMostrar = productos;
+   let productosAMostrar = productos;
 
-
-  if (categoriaActual === "todos") {
-    
-    productosAMostrar = mezclarAleatoriamente(productos);
-  } else {
+  if (categoriaActual !== "todos") {
     productosAMostrar = productos.filter(function(producto) {
       return producto.categoria === categoriaActual;
     });
@@ -68,6 +74,16 @@ function Catalogo() {
     } else if (orden === "alfabetico") {
         productosAMostrar = [...productosAMostrar].sort((a, b) => a.nombre.localeCompare(b.nombre));
     }
+
+      
+    const indiceUltimoProducto = paginaActual * PRODUCTOS_POR_PAGINA;
+    const indicePrimerProducto = indiceUltimoProducto - PRODUCTOS_POR_PAGINA;
+  
+  
+    const productosDeEstaPagina = productosAMostrar.slice(indicePrimerProducto, indiceUltimoProducto);
+
+  
+    const totalPaginas = Math.ceil(productosAMostrar.length / PRODUCTOS_POR_PAGINA);
 
 
   return (
@@ -101,50 +117,69 @@ function Catalogo() {
                 type="text" 
                 placeholder="Buscar amigurumi..." 
                 value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)} 
+                onChange={(e) => { 
+                  setBusqueda(e.target.value); 
+                  setPaginaActual(1); 
+                }}
+                
               />
-              <select className="ordenador" value={orden} onChange={(e) => setOrden(e.target.value)}>
+              <select className="ordenador" value={orden} onChange={(e) => {
+                setOrden(e.target.value);  
+                setPaginaActual(1)}}>
                 <option value="defecto">Ordenar por defecto</option>
                 <option value="precio-menor">Precio: Menor a Mayor</option>
                 <option value="precio-mayor">Precio: Mayor a Menor</option>
                 <option value="alfabetico">Nombre: A - Z</option>
               </select>
-            </section>
 
-            <div className="nav__catalogo">
+               <div className="nav__catalogo">
               <button 
                 className={categoriaActual === "todos" ? "boton-categoria nav__a--activo" : "boton-categoria"} 
-                onClick={() => setCategoriaActual("todos")}>
+                onClick={() => {
+                  setCategoriaActual("todos");  
+                  setPaginaActual(1)}}>
                 Todos
               </button>
               
               <button 
                 className={categoriaActual === "animales" ? "boton-categoria nav__a--activo" : "boton-categoria"} 
-                onClick={() => setCategoriaActual("animales")}>
+                onClick={() => {
+                  setCategoriaActual("animales"); 
+                  setPaginaActual(1)}}>
                 Animales
               </button>
 
               <button 
                 className={categoriaActual === "personajes" ? "boton-categoria nav__a--activo" : "boton-categoria"} 
-                onClick={() => setCategoriaActual("personajes")}>
+                onClick={() =>  {
+                  setCategoriaActual("personajes");  
+                  setPaginaActual(1)}}>
                 Personajes
               </button>
 
               <button 
                 className={categoriaActual === "parejas" ? "boton-categoria nav__a--activo" : "boton-categoria"} 
-                onClick={() => setCategoriaActual("parejas")}>
+                onClick={() => {
+                  setCategoriaActual("parejas");
+                setPaginaActual(1)}}>
                 Parejas
               </button>
 
               <button 
                 className={categoriaActual === "regalo" ? "boton-categoria nav__a--activo" : "boton-categoria"} 
-                onClick={() => setCategoriaActual("regalo")}>
+                onClick={() => {
+                  setCategoriaActual("regalo");  
+                  setPaginaActual(1)}}>
                 Regalos
               </button>
             </div>
 
+            </section>
+
+           
+
           <section className='tarjeta-container'>
-            {productosAMostrar.map(function(producto) {
+            {productosDeEstaPagina.map(function(producto) {
             return (
               <TarjetaProducto 
                 key={producto.id}
@@ -157,6 +192,37 @@ function Catalogo() {
             );  
             })}
           </section>
+
+           {totalPaginas > 1 && (
+            <section className="paginacion">
+              <button 
+                className="btn-pagina" 
+                disabled={paginaActual === 1}
+                onClick={() => setPaginaActual(paginaActual - 1)}
+              >
+                ← Anterior
+              </button>
+
+              {/* Generamos un botón por cada página */}
+              {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((numeroPagina) => (
+                <button
+                  key={numeroPagina}
+                  className={`btn-pagina ${paginaActual === numeroPagina ? "activo" : ""}`}
+                  onClick={() => setPaginaActual(numeroPagina)}
+                >
+                  {numeroPagina}
+                </button>
+              ))}
+
+              <button 
+                className="btn-pagina" 
+                disabled={paginaActual === totalPaginas}
+                onClick={() => setPaginaActual(paginaActual + 1)}
+              >
+                Siguiente →
+              </button>
+            </section>
+          )}
         </div>
       </main>
 

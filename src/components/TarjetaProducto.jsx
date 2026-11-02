@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import '../css/componentes/tarjeta-producto.css';
 
 function TarjetaProducto(props) {
     return (

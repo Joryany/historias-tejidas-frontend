@@ -1,0 +1,171 @@
+/*==================================================
+=        ADMIN: INICIO DE SESIÓN Y DASHBOARD       =
+==================================================*/
+
+/* ====== LOGIN ADMIN ====== */
+
+.admin-login-contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: var(--espacio-md);
+    background-color: var(--gradiente-resalte);
+}
+
+.admin-login-caja {
+    background: var(--rosa-fondo);
+    padding: var(--padding-seccion);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra-grande);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: var(--espacio-md);
+}
+
+.admin-login-caja h1 {
+    color: var(--frambuesa);
+}
+
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+    gap: 10px;
+    text-align: left;
+    color: var(--rosa-fuerte);
+    font-size: var(--texto-grande);
+    width: 100%;
+}
+
+.admin-form input {
+    padding: 10px;
+    border: 2px solid var(--rosa-suave);
+    border-radius: 10px;
+}
+
+.content-btn_adminlogin {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+    gap: var(--espacio-md);
+}
+
+.btn-admin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--texto-mediano);
+    padding: 12px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+
+/* ====== DASHBOARD ADMIN ====== */
+
+
+.admin-dashboard {
+    min-height: 100vh;
+    background-color: var(--gradiente);
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--espacio-sm);
+    padding: var(--padding-seccion);
+    background-color: var(--rosa-principal);
+    color: var(--rosa-coral);
+}
+
+.admin-header h1 {
+    color: white;
+    font-size: 1.5rem;
+}
+
+.admin-contenido {
+    padding: clamp(16px, 3vw, 32px);
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--rosa-fondo);
+}
+
+.admin-pestanas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.btn-pestana {
+    padding: 8px 18px;
+    border: 2px solid var(--rosa-principal);
+    background: transparent;
+    color: var(--rosa-principal);
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: medium;
+}
+
+.btn-pestana.activo {
+    background: var(--rosa-principal);
+    color: white;
+}
+
+.tabla-contenedor {
+    background: white;
+    padding: clamp(12px, 2vw, 20px);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra-media);
+    overflow-x: auto;
+}
+
+.tabla-admin {
+    width: 100%;
+    min-width: 640px; /* en pantallas pequeñas la tabla se desplaza dentro de .tabla-contenedor en vez de comprimirse */
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+.tabla-admin th,
+.tabla-admin td {
+    padding: var(--padding-tarjeta);
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    color: var(--rosa-fuerte);
+    font-size: var(--texto-grande);
+    font-weight: var(--negrita);
+}
+
+.tabla-admin th {
+    background-color: var(--rosa-fondo);
+    color: var(--rosa-principal);
+    font-size: var(--titulo-4);
+}
+
+/* Eliminado "font-size: 0.9rem": quedaba anulado por "font-size: large" declarado después */
+.btn-whatsapp {
+    background-color: #25D366;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.05rem;
+    white-space: nowrap;
+}
+
+.btn-whatsapp:hover {
+    background-color: #128C7E;
+}

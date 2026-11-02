@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, NavLink } from 'react-router-dom';
-import '../style.css'
+import '../style.css';
+import '../css/paginas/personaliza.css';
 import Calendario from "../components/Calendario";
 
 function Personaliza() {
@@ -21,10 +22,12 @@ function Personaliza() {
 
   const [enviado, setEnviado] = useState(false);
 
+  const [errorWhatsapp, setErrorWhatsapp] = useState("");
+
  
   const manejarEnvio = (e) => {
     e.preventDefault();
-    // Aquí irá el fetch al backend más adelante.
+    
     console.log("Formulario enviado:", { idProducto, nombre, whatsapp, fecha, lugar, descripcion });
     setEnviado(true);
   };
@@ -87,14 +90,60 @@ function Personaliza() {
             <label>Nombre completo:</label>
             <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
 
-            <label>WhatsApp:</label>
-            <input type="tel" value={whatsapp} onChange={(e) => setWhatsapp(e.target.value)} required />
+           <label>WhatsApp:</label>
+
+            <div className="input-con-prefijo">
+              <span className="prefijo">+57</span>
+              <input 
+                type="tel" 
+                value={whatsapp} 
+                onChange={(e) => {
+                  setWhatsapp(e.target.value);
+                  if (!/^3\d{9}$/.test(e.target.value)) {
+                    setErrorWhatsapp("⚠️ Debe ser un celular válido, por favor revisar el número ingresado.");
+                  } else {
+                    setErrorWhatsapp(""); 
+                  }
+                }} 
+                placeholder="3001234567"
+                maxLength="10"
+                required 
+              />
+            </div>
+            {errorWhatsapp && <span className="error-mensaje">{errorWhatsapp}</span>}
 
            <label>Fecha de entrega deseada:</label>
             <Calendario fecha={fecha} setFecha={setFecha} />
 
-            <label>Lugar de entrega:</label>
-            <input type="text" value={lugar} onChange={(e) => setLugar(e.target.value)} required />
+            <label>Dirección de entrega:</label>
+            <input 
+              type="text" 
+              value={lugar} 
+              onChange={(e) => setLugar(e.target.value)} 
+              placeholder="Ej: Carrera 45 # 72-10, Barranquilla"
+              required 
+            />
+
+
+            {lugar.length > 5 && !lugar.toLowerCase().includes("colombia") && !lugar.toLowerCase().includes("barranquilla") && !lugar.toLowerCase().includes("atlantico") && (
+              <span className="error-mensaje">
+                Por el momento solo realizamos entregas en Colombia (Barranquilla). <br/> ⚠️ Agrega tu ciudad/país a la dirección.
+              </span>
+            )}
+
+
+            {lugar.length > 5 && (lugar.toLowerCase().includes("colombia") || lugar.toLowerCase().includes("barranquilla") || lugar.toLowerCase().includes("atlantico")) && (
+              <div className="contenedor-mapa">
+                <iframe
+                  title="Mapa de entrega"
+                  width="100%"
+                  height="200"
+                  style={{ border: 0, borderRadius: "10px", marginTop: "10px" }}
+                  loading="lazy"
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(lugar + ", Colombia")}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+                ></iframe>
+              </div>
+            )}
 
             {!idProducto && (
               <>

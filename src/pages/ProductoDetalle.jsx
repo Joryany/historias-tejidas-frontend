@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, NavLink } from 'react-router-dom';
 import TarjetaProducto from '../components/TarjetaProducto';
 import '../style.css';
-
+import '../css/paginas/producto-detalle.css';
 
 function ProductoDetalle() {
   const { id } = useParams(); 

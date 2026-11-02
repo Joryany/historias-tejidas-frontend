@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, Link, NavLink } from 'react-router-dom';
 import '../style.css';
+import '../css/paginas/carrito.css';
 import Calendario from "../components/Calendario";
 
 function Carrito() {
-  // 1. Estados del carrito
+
   const [carrito, setCarrito] = useState(() => {
     const guardado = localStorage.getItem("carritoHT");
     return guardado ? JSON.parse(guardado) : [];
   });
 
-  // 2. Estados del formulario
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [enviado, setEnviado] = useState(false);
   const [nombre, setNombre] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
+  const [errorWhatsapp, setErrorWhatsapp] = useState(""); // <--- ¡AQUÍ ESTABA EL ERROR (FALTABA DECLARAR ESTE ESTADO)!
   const [fecha, setFecha] = useState("");
   const [lugar, setLugar] = useState("");
 
-  // 3. Funciones del carrito
   const actualizarCarrito = (nuevoCarrito) => {
     setCarrito(nuevoCarrito);
     localStorage.setItem("carritoHT", JSON.stringify(nuevoCarrito));
@@ -40,13 +40,11 @@ function Carrito() {
     }
   };
   
-  // 4. Total
   let total = 0;
   carrito.forEach(item => {
     total += item.precioFinal * item.cantidad;
   });
 
-  // 5. Función para enviar el pedido
   const procesarPedido = (e) => {
     e.preventDefault();
 
@@ -78,20 +76,18 @@ function Carrito() {
 
   return (
     <div>
-      <header>
+     <header>
         <img src="/logo-sin-texto.png" alt="Logo" />
         <nav className='navegador_principal'>
           <NavLink to="/" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Inicio</NavLink>
           <NavLink to="/catalogo" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Catálogo</NavLink>
           <NavLink to="/personaliza" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Personaliza</NavLink>
           <NavLink to="/carrito" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>Carrito</NavLink>
+          <NavLink to="/favoritos" className={({ isActive }) => isActive ? "nav__a--activo" : ""}>♥</NavLink>
         </nav>
       </header>
 
       <main className="pagina-carrito">
-        <h1>Tu Carrito de Compras</h1>
-
-       
         {enviado ? (
           <div className="carrito-vacio">
             <h2>¡Pedido enviado con éxito!</h2>
@@ -110,13 +106,59 @@ function Carrito() {
             <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
 
             <label>WhatsApp:</label>
-            <Calendario fecha={fecha} setFecha={setFecha} />
+            <div className="input-con-prefijo">
+              <span className="prefijo">+57</span>
+              <input 
+                type="tel" 
+                value={whatsapp} 
+                onChange={(e) => {
+                  setWhatsapp(e.target.value);
+                  if (!/^3\d{9}$/.test(e.target.value)) {
+                    setErrorWhatsapp("⚠️ Debe ser un celular válido, por favor revisar el número ingresado.");
+                  } else {
+                    setErrorWhatsapp(""); 
+                  }
+                }} 
+                placeholder="3001234567"
+                maxLength="10"
+                required 
+              />
+            </div>
+            {errorWhatsapp && <span className="error-mensaje">{errorWhatsapp}</span>}
 
             <label>Fecha deseada de entrega:</label>
-            <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
+            <Calendario fecha={fecha} setFecha={setFecha} />
 
             <label>Lugar de entrega:</label>
-            <input type="text" value={lugar} onChange={(e) => setLugar(e.target.value)} required />
+            <label>Dirección de entrega:</label>
+            <input 
+              type="text" 
+              value={lugar} 
+              onChange={(e) => setLugar(e.target.value)} 
+              placeholder="Ej: Carrera 45 # 72-10, Barranquilla"
+              required 
+            />
+
+
+            {lugar.length > 5 && !lugar.toLowerCase().includes("colombia") && !lugar.toLowerCase().includes("barranquilla") && !lugar.toLowerCase().includes("atlantico") && (
+              <span className="error-mensaje">
+                Por el momento solo realizamos entregas en Colombia (Barranquilla). <br/> ⚠️ Agrega tu ciudad/país a la dirección.
+              </span>
+            )}
+
+
+            {lugar.length > 5 && (lugar.toLowerCase().includes("colombia") || lugar.toLowerCase().includes("barranquilla") || lugar.toLowerCase().includes("atlantico")) && (
+              <div className="contenedor-mapa">
+                <iframe
+                  title="Mapa de entrega"
+                  width="100%"
+                  height="200"
+                  style={{ border: 0, borderRadius: "10px", marginTop: "10px" }}
+                  loading="lazy"
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(lugar + ", Colombia")}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+                ></iframe>
+              </div>
+            )}
 
             <div className="checkout-botones">
               <button type="button" className="button" onClick={() => setMostrarFormulario(false)}>Volver al carrito</button>
@@ -129,8 +171,10 @@ function Carrito() {
         carrito.length === 0 ? (
           <div className="carrito-vacio">
             <h2>Aún te faltan Historias por Contar...</h2>
-            <Link to="/catalogo" className="button">Ir a ver productos</Link>
-            <Link to="/personaliza" className="button">Crear mi Historia</Link>
+            <div className="carrito-vacio-link">
+              <Link to="/catalogo" className="button">Ir a ver productos</Link>
+              <Link to="/personaliza" className="button">Crear mi Historia</Link>
+            </div>
           </div>
         ) : 
         
@@ -176,6 +220,37 @@ function Carrito() {
       </main>
 
       <footer>
+        <div className="footer-container">
+
+          <div className="footer-marca">
+            <img src="/logo-sin-texto.png" alt="Logo de Historias Tejidas" />
+            <h2>Historias Tejidas</h2>
+          </div>
+
+          <div className="cont-columna">
+
+            <div className="footer-columna">
+              <h3>Navegación</h3>
+              <Link to="/">Inicio</Link>
+              <Link to="/catalogo">Catálogo</Link>
+              <Link to="/personaliza">Personaliza</Link>
+            </div>
+
+            <div className="footer-columna">
+              <h3>Ayuda</h3>
+              <a href="#pf">Preguntas frecuentes</a>
+              <Link to="/contacto">Contacto</Link>
+            </div>
+
+            <div className="footer-columna">
+              <h3>Información</h3>
+              <Link to="/politica-privacidad">Política de privacidad</Link>
+              <Link to="/terminos">Términos y condiciones</Link>
+            </div>
+            
+          </div>
+        </div>
+
         <div className="footer-derechos">
           <p>© 2026 Historias Tejidas. Todos los derechos reservados.</p>
         </div>

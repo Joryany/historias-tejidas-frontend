@@ -1,4 +1,5 @@
-import '../style.css'
+import '../style.css';
+import '../css/paginas/inicio.css';
 import { Link, NavLink } from 'react-router-dom'; 
 
 function Inicio() {

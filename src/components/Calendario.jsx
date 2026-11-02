@@ -3,7 +3,7 @@ import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import { es } from "date-fns/locale";
 import "react-day-picker/style.css";
-import "../Calendario.css";
+import '../css/componentes/calendario.css';
 
 function Calendario({ fecha, setFecha }) {
   const [abierto, setAbierto] = useState(false);

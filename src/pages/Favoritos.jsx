@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import TarjetaProducto from '../components/TarjetaProducto';
 import '../style.css';
+import '../css/paginas/favoritos.css';
 
 function Favoritos() {
   const [productosFavoritos, setProductosFavoritos] = useState([]);
@@ -61,7 +62,8 @@ function Favoritos() {
       </header>
 
       <main className="pagina-favoritos">
-        <h1>Tus próximas historias a recordar:</h1>
+        <section>
+          <h1>Tus próximas historias a recordar:</h1>
 
         {cargando ? (
           <p>Buscando tus historias favoritas...</p>
@@ -72,7 +74,7 @@ function Favoritos() {
             <Link to="/catalogo" className="button">Explorar Catálogo</Link>
           </div>
         ) : (
-          <div className="pagina-favoritos_container">
+          <article className="pagina-favoritos_container">
             {productosFavoritos.map((prod) => (
               <div key={prod.id} className="favorito-wrapper">
                 <TarjetaProducto 
@@ -91,8 +93,9 @@ function Favoritos() {
                 </button>
               </div>
             ))}
-          </div>
+          </article>
         )}
+        </section>
       </main>
 
       <footer>
